@@ -1,7 +1,7 @@
 ﻿// scripts/validate-state.mjs
-// Purpose: validate the project state files before any automation runs.
-// Why this matters: broken JSON or missing fields can cause the pipeline
-// to publish duplicates, skip work incorrectly, or fail halfway through.
+// Purpose: Validate the Ember & Stone state files before automation runs.
+// Why: Broken JSON or missing fields can cause duplicate videos, skipped topics,
+// bad publishing state, or failed pipeline runs.
 
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -23,11 +23,11 @@ const REQUIRED_TOPIC_FIELDS = [
 ];
 
 function logInfo(message) {
-  console.log([INFO] );
+  console.log("[INFO] " + message);
 }
 
 function logError(message) {
-  console.error([ERROR] );
+  console.error("[ERROR] " + message);
 }
 
 async function readJsonArray(filePath, label) {
@@ -35,19 +35,20 @@ async function readJsonArray(filePath, label) {
     const rawText = await fs.readFile(filePath, "utf8");
 
     let parsed;
+
     try {
       parsed = JSON.parse(rawText);
     } catch (jsonError) {
-      throw new Error(${label} is not valid JSON: );
+      throw new Error(label + " is not valid JSON: " + jsonError.message);
     }
 
     if (!Array.isArray(parsed)) {
-      throw new Error(${label} must be a JSON array.);
+      throw new Error(label + " must be a JSON array.");
     }
 
     return parsed;
   } catch (error) {
-    throw new Error(Failed to read : );
+    throw new Error("Failed to read " + label + ": " + error.message);
   }
 }
 
@@ -55,27 +56,43 @@ function validateTopic(topic, index) {
   try {
     for (const field of REQUIRED_TOPIC_FIELDS) {
       if (!(field in topic)) {
-        throw new Error(Topic at index  is missing required field: );
+        throw new Error("Topic at index " + index + " is missing required field: " + field);
       }
     }
 
     if (typeof topic.id !== "string" || topic.id.trim() === "") {
-      throw new Error(Topic at index  must have a non-empty string id.);
+      throw new Error("Topic at index " + index + " must have a non-empty string id.");
     }
 
     if (typeof topic.title !== "string" || topic.title.trim() === "") {
-      throw new Error(Topic at index  must have a non-empty string title.);
+      throw new Error("Topic at index " + index + " must have a non-empty string title.");
+    }
+
+    if (typeof topic.status !== "string" || topic.status.trim() === "") {
+      throw new Error("Topic at index " + index + " must have a non-empty string status.");
     }
 
     if (!Number.isInteger(topic.priority)) {
-      throw new Error(Topic at index  priority must be an integer.);
+      throw new Error("Topic at index " + index + " priority must be an integer.");
+    }
+
+    if (typeof topic.video_type !== "string" || topic.video_type.trim() === "") {
+      throw new Error("Topic at index " + index + " must have a non-empty string video_type.");
+    }
+
+    if (typeof topic.risk_level !== "string" || topic.risk_level.trim() === "") {
+      throw new Error("Topic at index " + index + " must have a non-empty string risk_level.");
     }
 
     if (!Array.isArray(topic.source_notes)) {
-      throw new Error(Topic at index  source_notes must be an array.);
+      throw new Error("Topic at index " + index + " source_notes must be an array.");
+    }
+
+    if (typeof topic.created_at !== "string" || topic.created_at.trim() === "") {
+      throw new Error("Topic at index " + index + " must have a non-empty string created_at.");
     }
   } catch (error) {
-    throw new Error(Topic validation failed: );
+    throw new Error("Topic validation failed: " + error.message);
   }
 }
 
@@ -86,10 +103,12 @@ async function main() {
     const topics = await readJsonArray(TOPIC_QUEUE_PATH, "topic-queue.json");
     const published = await readJsonArray(PUBLISHED_PATH, "published.json");
 
-    topics.forEach(validateTopic);
+    topics.forEach((topic, index) => {
+      validateTopic(topic, index);
+    });
 
-    logInfo(	opic-queue.json valid. Topic count: );
-    logInfo(published.json valid. Published count: );
+    logInfo("topic-queue.json valid. Topic count: " + topics.length);
+    logInfo("published.json valid. Published count: " + published.length);
     logInfo("State validation passed.");
   } catch (error) {
     logError(error.message);
