@@ -388,3 +388,15 @@ Rule:
 - Use target ranges for cost and planning.
 - Use story quality, focus, structure, pacing, IP safety, scene alignment, and human review as hard gates.
 - Length should trigger review only when it causes dragging, repetition, rushed pacing, or incomplete payoff.
+
+## New Verified Rule: Remove Readable Text From Image Prompts
+
+Image prompts should not ask models to create readable words, letters, titles, carved words, or visible written phrases.
+
+Reason:
+
+Image models often generate ugly fake text or unreadable letter artifacts.
+
+Rule:
+
+Use symbols, blank pages, illegible marks, seals, stains, smears, or geometric carvings instead of readable words.
