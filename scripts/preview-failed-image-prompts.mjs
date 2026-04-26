@@ -1,10 +1,11 @@
 ﻿// scripts/preview-failed-image-prompts.mjs
 // Purpose: Print compiled prompts for the current hard failed scenes.
-// Why: We inspect prompt strength before spending more Leonardo credits.
+// Why: We inspect channel style + scene beat prompts before spending Leonardo credits.
 
 import path from "node:path";
 import { readJson, logInfo, logError } from "./lib/json-utils.mjs";
 import { compileBeatLockedPrompt } from "./lib/image-prompt-compiler.mjs";
+import { readChannelStyle, buildChannelStylePrompt } from "./lib/channel-style.mjs";
 
 const ROOT_DIR = process.cwd();
 const VISUAL_ROOT = path.join(ROOT_DIR, "output", "visuals");
@@ -43,17 +44,22 @@ async function loadScene(topicId, sceneNumber) {
 
 async function main() {
   try {
-    logInfo("Previewing compiled failed-scene prompts...");
+    logInfo("Previewing channel-styled failed-scene prompts...");
+
+    const channelStyle = await readChannelStyle(ROOT_DIR);
+    const channelStylePrompt = buildChannelStylePrompt(channelStyle);
 
     for (const target of TARGETS) {
       const scene = await loadScene(target.topicId, target.sceneNumber);
+      const scenePrompt = compileBeatLockedPrompt(scene.beat_lock, EXTRA_STYLE);
+      const fullPrompt = [channelStylePrompt, scenePrompt].join(" ");
 
       console.log("");
       console.log("============================================================");
       console.log(target.topicId + " / scene-" + target.sceneNumber);
       console.log(scene.scene_title);
       console.log("============================================================");
-      console.log(compileBeatLockedPrompt(scene.beat_lock, EXTRA_STYLE));
+      console.log(fullPrompt);
     }
   } catch (error) {
     logError(error.message);

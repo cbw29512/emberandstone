@@ -11,6 +11,7 @@ import {
   downloadFile
 } from "./lib/leonardo-client.mjs";
 import { readJson, writeJson, logInfo, logError } from "./lib/json-utils.mjs";
+import { readChannelStyle, buildChannelStylePrompt } from "./lib/channel-style.mjs";
 import { compileBeatLockedPrompt } from "./lib/image-prompt-compiler.mjs";
 
 const ROOT_DIR = process.cwd();
@@ -34,19 +35,15 @@ const APPROVED_SAMPLE_PATHS = {
   }
 };
 
-function buildPrompt(target) {
+function buildPrompt(target, channelStylePrompt = "") {
   const extraStyle = "dark fantasy illustration, cinematic composition, strong focal point, moody fog, atmospheric depth, high detail, dramatic light, no readable text, no letters, no logos";
 
-  if (target.beat_lock) {
-    return compileBeatLockedPrompt(target.beat_lock, extraStyle);
-  }
+  const scenePrompt = target.beat_lock
+    ? compileBeatLockedPrompt(target.beat_lock, extraStyle)
+    : [target.prompt, extraStyle].join("\n");
 
-  return [
-    target.prompt,
-    extraStyle
-  ].join("\n");
+  return [channelStylePrompt, scenePrompt].filter(Boolean).join(" ");
 }
-
 function labelFromTarget(target) {
   return target.kind === "thumbnail"
     ? "thumbnail"
@@ -110,7 +107,7 @@ async function writeFinalManifest(topicDir, label, data) {
   await writeJson(manifestPath, data);
 }
 
-async function generateTarget(apiKey, topicId, target) {
+async function generateTarget(apiKey, topicId, target, channelStylePrompt) {
   const label = labelFromTarget(target);
   const topicDir = path.join(FINAL_ROOT, topicId);
   const outputPath = path.join(topicDir, fileNameFromTarget(target));
@@ -137,7 +134,7 @@ async function generateTarget(apiKey, topicId, target) {
     return;
   }
 
-  const compiledPrompt = buildPrompt(target);
+  const compiledPrompt = buildPrompt(target, channelStylePrompt);
   const negativePrompt = "text, letters, logos, watermark, modern objects, copyrighted characters";
 
   const payload = {
@@ -169,6 +166,7 @@ async function generateTarget(apiKey, topicId, target) {
     output_file: outputPath,
     image_id: image.id,
     source_url: image.url,
+    channel_style_used: Boolean(channelStylePrompt),
     beat_lock_used: Boolean(target.beat_lock),
     compiled_prompt: compiledPrompt,
     negative_prompt: negativePrompt,
@@ -183,6 +181,8 @@ async function main() {
     logInfo("Generating final Leonardo image set...");
 
     const apiKey = await loadLeonardoKey(ROOT_DIR);
+    const channelStyle = await readChannelStyle(ROOT_DIR);
+    const channelStylePrompt = buildChannelStylePrompt(channelStyle);
     const selectedState = await readJson(SELECTED_TOPICS_PATH, "selected-topics.json");
     const topics = Array.isArray(selectedState.topics) ? selectedState.topics : [];
 
@@ -196,7 +196,7 @@ async function main() {
       const targets = buildTargets(promptPackage);
 
       for (const target of targets) {
-        await generateTarget(apiKey, topic.id, target);
+        await generateTarget(apiKey, topic.id, target, channelStylePrompt);
       }
     }
 
