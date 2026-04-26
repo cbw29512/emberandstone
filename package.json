@@ -7,6 +7,8 @@
   "scripts": {
     "validate:state": "node scripts/validate-state.mjs",
     "select:topics": "node scripts/select-topics.mjs",
-    "generate:script-packages": "node scripts/generate-script-packages.mjs"
+    "generate:script-packages": "node scripts/generate-script-packages.mjs",
+    "generate:ai-prompts": "node scripts/generate-ai-scripts.mjs --dry-run",
+    "generate:ai-scripts": "node scripts/generate-ai-scripts.mjs"
   }
 }
