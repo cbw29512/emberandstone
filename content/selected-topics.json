@@ -1,0 +1,33 @@
+{
+  "selected_at": "2026-04-26T16:27:16.927Z",
+  "selection_reason": "launch_batch",
+  "requested_count": 2,
+  "topics": [
+    {
+      "id": "forgotten-god-under-mountain",
+      "title": "The Forgotten God Beneath the Mountain",
+      "status": "queued",
+      "priority": 1,
+      "video_type": "longform",
+      "risk_level": "safe",
+      "source_notes": [
+        "Original dark fantasy lore concept",
+        "Avoid official D&D names/settings/stat blocks"
+      ],
+      "created_at": "2026-04-26T00:00:00Z"
+    },
+    {
+      "id": "city-that-erased-its-own-name",
+      "title": "The City That Erased Its Own Name",
+      "status": "queued",
+      "priority": 2,
+      "video_type": "longform",
+      "risk_level": "safe",
+      "source_notes": [
+        "Original cursed-city premise",
+        "Usable for fantasy/TTRPG audience without official IP"
+      ],
+      "created_at": "2026-04-26T00:00:00Z"
+    }
+  ]
+}
