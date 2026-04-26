@@ -547,3 +547,14 @@ Current production target:
 - if there are not enough unique images, repeat images to fill the audio duration
 - distribute slot timing across the full narration duration
 - assembled video review matters more than judging stills in isolation
+
+## New Verified Rule: Leonardo Prompt Length Limit
+
+Leonardo rejected missing-image generation when prompts exceeded 1500 characters.
+
+Rule:
+
+- Missing-image prompts must be compacted before paid generation.
+- Audit must hard-fail any prompt above 1500 characters.
+- Prefer a 1400-character internal cap to leave safety room.
+- Keep channel style compact; do not inject the full style bible into every paid image prompt.

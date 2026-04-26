@@ -1,12 +1,12 @@
 ﻿// scripts/audit-missing-visual-prompts.mjs
 // Purpose: Audit missing-image prompt packages before spending Leonardo credits.
-// Why: Final video visuals must be unique, script-relevant, and channel-consistent.
 
 import fs from "node:fs/promises";
 import path from "node:path";
 
 const ROOT_DIR = process.cwd();
 const VISUALS_ROOT = path.join(ROOT_DIR, "output", "visuals");
+const MAX_PROMPT_LENGTH = 1500;
 
 function fail(message) {
   throw new Error(message);
@@ -51,27 +51,16 @@ function auditPromptItem(item, seenLabels, seenPrompts) {
   const prompt = cleanText(item.prompt);
   const negative = cleanText(item.negative_prompt);
 
-  if (!Number.isFinite(Number(item.planned_slot_number))) {
-    fail(context + " missing planned_slot_number.");
-  }
-
-  if (!cleanText(item.suggested_file_label)) {
-    fail(context + " missing suggested_file_label.");
-  }
-
-  if (seenLabels.has(item.suggested_file_label)) {
-    fail(context + " duplicate suggested_file_label.");
-  }
+  if (!Number.isFinite(Number(item.planned_slot_number))) fail(context + " missing planned_slot_number.");
+  if (!cleanText(item.suggested_file_label)) fail(context + " missing suggested_file_label.");
+  if (seenLabels.has(item.suggested_file_label)) fail(context + " duplicate suggested_file_label.");
 
   seenLabels.add(item.suggested_file_label);
 
-  if (prompt.length < 300) {
-    fail(context + " prompt is too short to be production-safe.");
-  }
-
-  if (seenPrompts.has(prompt)) {
-    fail(context + " duplicate prompt body.");
-  }
+  if (prompt.length < 300) fail(context + " prompt is too short.");
+  if (prompt.length > MAX_PROMPT_LENGTH) fail(context + " exceeds Leonardo prompt limit: " + prompt.length);
+  if (negative.length > 1000) fail(context + " negative prompt too long: " + negative.length);
+  if (seenPrompts.has(prompt)) fail(context + " duplicate prompt body.");
 
   seenPrompts.add(prompt);
 
@@ -87,28 +76,13 @@ function auditPromptItem(item, seenLabels, seenPrompts) {
   requireIncludes(negative, "logos", context);
   requireIncludes(negative, "watermark", context);
   requireIncludes(negative, "copyrighted characters", context);
-
-  if (prompt.length > 5000) {
-    console.warn("[WARN] " + context + " prompt is long: " + prompt.length + " characters.");
-  }
 }
 
 function auditPackage(pkg) {
-  if (!cleanText(pkg.topic_id)) {
-    fail("Package missing topic_id.");
-  }
-
-  if (!Array.isArray(pkg.prompts)) {
-    fail(pkg.topic_id + " prompts must be an array.");
-  }
-
-  if (pkg.prompt_count !== pkg.prompts.length) {
-    fail(pkg.topic_id + " prompt_count does not match prompts length.");
-  }
-
-  if (pkg.additional_unique_images_needed !== pkg.prompts.length) {
-    fail(pkg.topic_id + " additional_unique_images_needed does not match prompts length.");
-  }
+  if (!cleanText(pkg.topic_id)) fail("Package missing topic_id.");
+  if (!Array.isArray(pkg.prompts)) fail(pkg.topic_id + " prompts must be an array.");
+  if (pkg.prompt_count !== pkg.prompts.length) fail(pkg.topic_id + " prompt_count mismatch.");
+  if (pkg.additional_unique_images_needed !== pkg.prompts.length) fail(pkg.topic_id + " additional count mismatch.");
 
   const seenLabels = new Set();
   const seenPrompts = new Set();
@@ -130,7 +104,6 @@ async function main() {
       if (!entry.isDirectory()) continue;
 
       const packagePath = path.join(VISUALS_ROOT, entry.name, "missing-image-prompts.json");
-
       if (!(await pathExists(packagePath))) continue;
 
       const pkg = await readJson(packagePath);
@@ -140,9 +113,7 @@ async function main() {
       totalPrompts += pkg.prompts.length;
     }
 
-    if (packageCount === 0) {
-      fail("No missing-image prompt packages found.");
-    }
+    if (packageCount === 0) fail("No missing-image prompt packages found.");
 
     console.log("[PASS] Missing visual prompt audit passed.");
     console.log("[INFO] Packages audited: " + packageCount);
