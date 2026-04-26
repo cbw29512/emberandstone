@@ -12,6 +12,7 @@ import {
 } from "./lib/leonardo-client.mjs";
 import { readJson, writeJson, logInfo, logError } from "./lib/json-utils.mjs";
 import { readChannelStyle, buildChannelStylePrompt } from "./lib/channel-style.mjs";
+import { readImageModelPolicy, getDefaultImageModel } from "./lib/image-model-policy.mjs";
 import { compileBeatLockedPrompt } from "./lib/image-prompt-compiler.mjs";
 
 const ROOT_DIR = process.cwd();
@@ -107,7 +108,7 @@ async function writeFinalManifest(topicDir, label, data) {
   await writeJson(manifestPath, data);
 }
 
-async function generateTarget(apiKey, topicId, target, channelStylePrompt) {
+async function generateTarget(apiKey, topicId, target, channelStylePrompt, selectedModel) {
   const label = labelFromTarget(target);
   const topicDir = path.join(FINAL_ROOT, topicId);
   const outputPath = path.join(topicDir, fileNameFromTarget(target));
@@ -138,7 +139,7 @@ async function generateTarget(apiKey, topicId, target, channelStylePrompt) {
   const negativePrompt = "text, letters, logos, watermark, modern objects, copyrighted characters";
 
   const payload = {
-    modelId: MODEL_ID,
+    modelId: selectedModel.model_id,
     prompt: compiledPrompt,
     negative_prompt: negativePrompt,
     num_images: 1,
@@ -160,7 +161,9 @@ async function generateTarget(apiKey, topicId, target, channelStylePrompt) {
     label,
     status: "generated",
     generation_id: generationId,
-    model_id: MODEL_ID,
+    image_model_policy_used: true,
+    model_id: selectedModel.model_id,
+    model_name: selectedModel.model_name,
     width: WIDTH,
     height: HEIGHT,
     output_file: outputPath,
@@ -183,6 +186,8 @@ async function main() {
     const apiKey = await loadLeonardoKey(ROOT_DIR);
     const channelStyle = await readChannelStyle(ROOT_DIR);
     const channelStylePrompt = buildChannelStylePrompt(channelStyle);
+    const modelPolicy = await readImageModelPolicy(ROOT_DIR);
+    const selectedModel = getDefaultImageModel(modelPolicy);
     const selectedState = await readJson(SELECTED_TOPICS_PATH, "selected-topics.json");
     const topics = Array.isArray(selectedState.topics) ? selectedState.topics : [];
 
@@ -196,7 +201,7 @@ async function main() {
       const targets = buildTargets(promptPackage);
 
       for (const target of targets) {
-        await generateTarget(apiKey, topic.id, target, channelStylePrompt);
+        await generateTarget(apiKey, topic.id, target, channelStylePrompt, selectedModel);
       }
     }
 
