@@ -5,3 +5,9 @@
 *.pem
 node_modules/
 output/
+# Local secrets - never commit
+secrets/
+secrets/**
+*.secret.json
+*client_secret*.json
+*token*.json
