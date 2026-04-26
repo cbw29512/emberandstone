@@ -1,7 +1,7 @@
 ﻿// scripts/validate-state.mjs
-// Purpose: Validate the Ember & Stone state files before automation runs.
-// Why: Broken JSON or missing fields can cause duplicate videos, skipped topics,
-// bad publishing state, or failed pipeline runs.
+// Purpose: Validate Ember & Stone state files before automation runs.
+// Why: Bad JSON or missing fields can break the pipeline, cause duplicate topics,
+// or corrupt publishing state.
 
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -32,7 +32,7 @@ function logError(message) {
 
 async function readJsonArray(filePath, label) {
   try {
-    const rawText = await fs.readFile(filePath, "utf8");
+    const rawText = (await fs.readFile(filePath, "utf8")).replace(/^\uFEFF/, "");
 
     let parsed;
 
