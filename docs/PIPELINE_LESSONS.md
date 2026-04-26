@@ -410,3 +410,25 @@ Rule:
 - Copy approved sample images into the final output set.
 - Generate only the missing remaining final images.
 - Keep final image generation idempotent so reruns do not waste credits.
+
+## New Verified Rule: Human Visual Review Is a Hard Gate
+
+Final images must not be approved just because they exist.
+
+A dark fantasy lore image must pass all of these checks:
+
+- It looks amazing enough for a serious lore channel.
+- It has a strong focal point.
+- It matches the exact script beat.
+- It is not merely generic dark fantasy mood.
+- It avoids readable text, fake letters, watermarks, logos, and protected IP drift.
+- It supports thumbnail/retention quality.
+- It can be rejected and regenerated without rerunning the whole batch.
+
+Verified issue:
+
+Some generated images looked good stylistically but failed the script beat. The correct workflow was to move only weak images to rejected output, strengthen those prompts, and regenerate only the missing finals.
+
+Rule:
+
+Use sample image review first. Then after final batch generation, perform human visual beat-match review. Regenerate only failed images until every final image is approved.
