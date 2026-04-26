@@ -1,5 +1,5 @@
 ﻿// scripts/lib/image-prompt-compiler.mjs
-// Purpose: Compile structured beat-lock fields into stronger image prompts.
+// Purpose: Compile structured beat-lock fields into hard visual shot prompts.
 // Why: Loose mood prompts create beautiful images that can miss the script beat.
 
 import assert from "node:assert/strict";
@@ -57,18 +57,22 @@ export function compileBeatLockedPrompt(beatLock, extraStyle = "") {
   const lock = validateBeatLock(beatLock);
 
   const sections = [
-    "Primary subject: " + lock.primary_subject + ".",
-    "Primary action: " + lock.primary_action + ".",
-    "Required visible elements: " + lock.required_elements.join(", ") + ".",
-    "Environment: " + lock.environment + ".",
-    "Background element: " + lock.background_element + ".",
-    "Framing: " + lock.framing + ".",
-    "Mood: " + lock.mood + ".",
-    "Must not drift into: " + lock.forbidden_drift.join(", ") + "."
+    "DARK FANTASY LORE ILLUSTRATION.",
+    "This is a single story-beat image, not generic mood art.",
+    "THE IMAGE MUST SHOW: " + lock.primary_subject + ".",
+    "THE MAIN ACTION MUST BE: " + lock.primary_action + ".",
+    "THE REQUIRED VISIBLE ELEMENTS ARE: " + lock.required_elements.join("; ") + ".",
+    "THE ENVIRONMENT MUST BE: " + lock.environment + ".",
+    "THE BACKGROUND MUST INCLUDE: " + lock.background_element + ".",
+    "CAMERA AND FRAMING: " + lock.framing + ".",
+    "EMOTIONAL MOOD: " + lock.mood + ".",
+    "DO NOT SHOW OR IMPLY: " + lock.forbidden_drift.join("; ") + ".",
+    "If the main action is not visible, the image is wrong.",
+    "If required elements are missing, the image is wrong."
   ];
 
   if (lock.style_tags.length > 0) {
-    sections.push("Style tags: " + lock.style_tags.join(", ") + ".");
+    sections.push("STYLE: " + lock.style_tags.join(", ") + ".");
   }
 
   if (cleanString(extraStyle)) {

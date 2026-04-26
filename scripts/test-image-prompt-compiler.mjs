@@ -30,17 +30,22 @@ try {
     "dark fantasy illustration, strong focal point, no readable text"
   );
 
-  assert.ok(prompt.includes("Primary subject: a dead scholar."));
-  assert.ok(prompt.includes("Primary action: slumped motionless at a wooden desk."));
-  assert.ok(prompt.includes("Must not drift into: actively writing, smiling, crowded room."));
+  assert.ok(prompt.includes("DARK FANTASY LORE ILLUSTRATION."));
+  assert.ok(prompt.includes("This is a single story-beat image, not generic mood art."));
+  assert.ok(prompt.includes("THE IMAGE MUST SHOW: a dead scholar."));
+  assert.ok(prompt.includes("THE MAIN ACTION MUST BE: slumped motionless at a wooden desk."));
+  assert.ok(prompt.includes("THE REQUIRED VISIBLE ELEMENTS ARE: blank journals; single candle; wrist mark."));
+  assert.ok(prompt.includes("DO NOT SHOW OR IMPLY: actively writing; smiling; crowded room."));
+  assert.ok(prompt.includes("If the main action is not visible, the image is wrong."));
+  assert.ok(prompt.includes("If required elements are missing, the image is wrong."));
 
   const negatives = buildNegativePrompt(["gore"]);
   assert.ok(negatives.includes("text"));
   assert.ok(negatives.includes("logos"));
   assert.ok(negatives.includes("gore"));
 
-  console.log("[PASS] image prompt compiler test passed.");
+  console.log("[PASS] hardened image prompt compiler test passed.");
 } catch (error) {
-  console.error("[FAIL] image prompt compiler test failed: " + error.message);
+  console.error("[FAIL] hardened image prompt compiler test failed: " + error.message);
   process.exitCode = 1;
 }

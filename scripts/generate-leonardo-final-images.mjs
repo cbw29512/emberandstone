@@ -137,10 +137,13 @@ async function generateTarget(apiKey, topicId, target) {
     return;
   }
 
+  const compiledPrompt = buildPrompt(target);
+  const negativePrompt = "text, letters, logos, watermark, modern objects, copyrighted characters";
+
   const payload = {
     modelId: MODEL_ID,
-    prompt: buildPrompt(target),
-    negative_prompt: "text, letters, logos, watermark, modern objects, copyrighted characters",
+    prompt: compiledPrompt,
+    negative_prompt: negativePrompt,
     num_images: 1,
     width: WIDTH,
     height: HEIGHT
@@ -166,6 +169,9 @@ async function generateTarget(apiKey, topicId, target) {
     output_file: outputPath,
     image_id: image.id,
     source_url: image.url,
+    beat_lock_used: Boolean(target.beat_lock),
+    compiled_prompt: compiledPrompt,
+    negative_prompt: negativePrompt,
     created_at: new Date().toISOString()
   });
 
