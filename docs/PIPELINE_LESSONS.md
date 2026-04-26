@@ -523,3 +523,16 @@ Updated rule:
 - A file that mixes unrelated jobs must be split even if it is under the hard limit.
 
 For Ember & Stone, production momentum matters. Do not block a safe focused script over a tiny line-count overage.
+
+## New Verified Rule: FFmpeg Encoder Availability Must Be Detected
+
+Do not assume `libx264` exists on every machine.
+
+Verified issue:
+
+- The local FFmpeg build can exist and run while still lacking `libx264`.
+- Review rendering must detect available encoders and fall back safely.
+
+Rule:
+
+Try available video encoders in order and record the encoder used in the render manifest.
