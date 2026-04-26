@@ -26,6 +26,7 @@
                     "audit:image-prompts":  "node scripts/audit-image-prompts.mjs",
                     "repair:image-prompts":  "node scripts/repair-image-prompt-text-risks.mjs",
                     "list:leonardo-models":  "node scripts/list-leonardo-models.mjs",
-                    "generate:sample-images":  "node scripts/generate-leonardo-sample-images.mjs"
+                    "generate:sample-images":  "node scripts/generate-leonardo-sample-images.mjs",
+                    "generate:final-images":  "node scripts/generate-leonardo-final-images.mjs"
                 }
 }

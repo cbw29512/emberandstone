@@ -400,3 +400,13 @@ Image models often generate ugly fake text or unreadable letter artifacts.
 Rule:
 
 Use symbols, blank pages, illegible marks, seals, stains, smears, or geometric carvings instead of readable words.
+
+## New Verified Rule: Reuse Approved Sample Images Before Full Final Batch
+
+If the sample images are approved by human review, reuse them as final assets instead of regenerating them.
+
+Rule:
+
+- Copy approved sample images into the final output set.
+- Generate only the missing remaining final images.
+- Keep final image generation idempotent so reruns do not waste credits.
