@@ -1,0 +1,20 @@
+﻿# Secrets - never commit
+APIKeys.txt
+.env
+.env.local
+*.key
+*.pem
+
+# Node dependencies
+node_modules/
+
+# Generated output
+output/
+*.mp4
+*.mp3
+*.wav
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+.vscode/
