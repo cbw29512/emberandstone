@@ -216,3 +216,11 @@ A video is not publish-ready unless all of these are true:
 If any story audit fails, the pipeline must revise the script, regenerate tightened narration, and remake voice audio before moving to video rendering.
 
 Cost is allowed when needed for quality. Do not choose cheap output over production-grade output.
+
+## Pipeline Lessons
+
+Verified build lessons, known failures, working rules, and repeatable setup notes are stored in:
+
+docs/PIPELINE_LESSONS.md
+
+Future work must update that file whenever a new step works, fails, or reveals a reusable rule.

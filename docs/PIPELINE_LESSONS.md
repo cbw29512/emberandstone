@@ -1,0 +1,315 @@
+﻿# Ember & Stone Pipeline Lessons
+
+This file records verified project lessons so this channel-pipeline can be repeated for a different subject without relying on memory, guesses, or hallucinated assumptions.
+
+## Verified Current Project
+
+Local folder:
+
+C:\Users\divcl\OneDrive\Desktop\EmberAndStone
+
+GitHub repo:
+
+https://github.com/cbw29512/emberandstone
+
+## Repeatable Pipeline Blueprint
+
+Use this sequence for Ember & Stone and future subject channels:
+
+1. Create a source-of-truth project context.
+2. Define topic queue and published state.
+3. Run duplicate-topic guard.
+4. Generate script package.
+5. Generate AI script.
+6. Repair malformed AI JSON if needed.
+7. Tighten narration.
+8. Audit story structure.
+9. Generate voice package.
+10. Test voice with short sample.
+11. Generate full narration audio only after story passes.
+12. Audit audio.
+13. Audit production readiness.
+14. Generate visuals/video only after quality gates pass.
+15. Upload only after human review.
+
+## Golden Rules
+
+- One topic equals one video.
+- A completed topic is never reused.
+- Generated output does not mean publish-ready.
+- First-pass AI output must never be posted raw.
+- Models write prose; code owns JSON, schema, state, and manifests.
+- Every generation step must respect PROJECT_CONTEXT.md.
+- Every production step must run checks first.
+- Every source file must stay under 150 lines.
+- Split reusable code into scripts/lib modules.
+- API keys and generated outputs must never be committed.
+- Paid assets must be idempotent: never regenerate paid audio if a valid file already exists.
+- Human review remains required before upload until the system proves consistent quality.
+
+## What Worked
+
+### PROJECT_CONTEXT.md
+
+The root context file works as the project anchor.
+
+It prevents drift in:
+
+- tone
+- content type
+- channel direction
+- IP safety
+- quality rules
+- publishing rules
+
+Future subject channels must start with a similar root context file.
+
+### Topic Queue and Published State
+
+These files are required:
+
+- content/topic-queue.json
+- content/published.json
+- output/state/selected-topics.json
+
+The topic system works when selected topics are checked against published/completed topics before generation.
+
+### Duplicate Topic Guard
+
+Command:
+
+npm run check:topics
+
+Verified result:
+
+- topic queue count: 12
+- completed topic count: 0
+- selected topic count: 2
+- duplicate/topic reuse check passed
+
+This must run before script generation, audio generation, image generation, video rendering, or upload.
+
+### AI Script Generation
+
+AI script generation works, but long AI JSON can fail parsing.
+
+Verified failure pattern:
+
+- malformed JSON from AI response
+- parser correctly refused bad output
+
+Fix:
+
+- add a JSON repair utility
+- keep code responsible for validating JSON
+
+### Narration Tightening
+
+Narration tightening works better when the AI returns plain narration text only.
+
+Bad pattern:
+
+- ask AI to rewrite full JSON
+
+Good pattern:
+
+- ask AI to rewrite only narration
+- code inserts narration into existing JSON
+
+Reason:
+
+- AI is good at prose
+- code is better at structure and state
+
+### Story Audit Gate
+
+Command:
+
+npm run audit:story
+
+Verified result:
+
+- The Forgotten God Beneath the Mountain story audit passed
+- The City That Erased Its Own Name story audit passed
+- pass count: 2 of 2
+
+Story audit checks:
+
+- beginning
+- middle
+- summary / tie-together
+- ending
+- focus
+- completeness
+- IP safety
+
+No visuals should be generated before story audit passes.
+
+### Production Readiness Gate
+
+Command:
+
+npm run audit:production
+
+Verified result:
+
+- both selected topics stayed blocked_review
+- publish-ready count: 0
+
+This is correct behavior.
+
+Production should stay blocked until:
+
+- story audit passes
+- audio exists
+- quota is not blocking required output
+- visuals/video pass later checks
+- human review approves upload
+
+### ElevenLabs Voice Listing and Test Audio
+
+Voice listing worked.
+
+Selected test voice:
+
+George - Warm, Captivating Storyteller
+Voice ID: JBFqnCBsd6RMkjVDRZzb
+
+Test audio worked and created a non-empty MP3.
+
+Rule:
+
+Always test a small audio sample before generating full narration.
+
+### Full ElevenLabs Audio
+
+First full narration worked.
+
+Verified available file:
+
+output/audio/forgotten-god-under-mountain/narration.mp3
+
+Verified byte count:
+
+6816122
+
+Second narration was blocked by ElevenLabs quota.
+
+Known blocked topic:
+
+city-that-erased-its-own-name
+
+Reason:
+
+quota_exceeded
+
+Rule:
+
+Quota failure is not a code failure. It is a pipeline state that must be logged and handled.
+
+### Idempotent Audio Generation
+
+The quota-aware audio generator works.
+
+It skips already-generated MP3s instead of spending more credits.
+
+Rule:
+
+Never regenerate existing paid audio unless the file is deleted or intentionally invalidated.
+
+### Modular Code Rule
+
+The 150-line rule caught oversized files.
+
+Files that had to be split:
+
+- tighten-script-drafts.mjs
+- generate-elevenlabs-narration-audio.mjs
+- audit-story-structure.mjs
+
+Working pattern:
+
+- command script stays thin
+- reusable logic goes into scripts/lib
+
+## What Did Not Work
+
+### Do Not Trust Long AI JSON
+
+Long AI-generated JSON can break.
+
+Use repair scripts and validation.
+
+### Do Not Make AI Own State
+
+AI should not own:
+
+- JSON schema
+- topic state
+- published state
+- production manifests
+- duplicate tracking
+
+Code owns those.
+
+### Do Not Treat Near-Target Word Count as Failure
+
+A script slightly over preferred word count can still be usable.
+
+Use:
+
+- target word count
+- preferred max
+- acceptable max
+
+Do not block the pipeline over a small near-pass unless quality actually suffers.
+
+### Do Not Regenerate Paid Assets Blindly
+
+Rerunning paid generation without skip checks wastes credits.
+
+Every paid generation step must check for existing output first.
+
+### Do Not Upload Automatically Yet
+
+Human review remains required.
+
+Production manifest must remain publish_ready false until human approval is intentionally recorded.
+
+## Current Verified Status
+
+As of the latest verified checkpoint:
+
+- validate:state passed
+- check:topics passed
+- audit:story passed for both selected topics
+- audit:production passed but kept both topics blocked_review
+- audio exists for forgotten-god-under-mountain
+- city-that-erased-its-own-name is blocked by ElevenLabs quota
+- story audit modules are under 150 lines
+- latest story audit split was committed and pushed
+- working tree ended clean
+
+## Future Subject Reuse Checklist
+
+For a new subject, repeat this setup:
+
+1. Create a clean local folder.
+2. Create .gitignore before adding keys.
+3. Create PROJECT_CONTEXT.md first.
+4. Create content/topic-queue.json.
+5. Create content/published.json.
+6. Add duplicate guard.
+7. Add AI script generation.
+8. Add JSON validation/repair.
+9. Add narration tightening.
+10. Add story audit.
+11. Add voice package generation.
+12. Add test voice generation.
+13. Add idempotent full audio generation.
+14. Add production readiness gate.
+15. Keep docs updated every time a failure teaches a reusable rule.
+
+## Rule for Future Updates
+
+Whenever something works, fails, or teaches a repeatable rule, update this file and push it to GitHub before moving too far ahead.
