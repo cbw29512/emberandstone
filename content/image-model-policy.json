@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "channel_name": "Ember & Stone",
+  "purpose": "Permanent image model selection policy for long-running dark fantasy lore production.",
+  "default_model_id": "16e7060a-803e-4df3-97ee-edcfa5dc9cc8",
+  "default_model_name": "SDXL 1.0",
+  "policy_status": "active_source_of_truth",
+  "model_roles": {
+    "standard_atmospheric_scene": {
+      "model_id": "16e7060a-803e-4df3-97ee-edcfa5dc9cc8",
+      "model_name": "SDXL 1.0",
+      "status": "approved_for_atmospheric_scenes",
+      "use_for": [
+        "landscapes",
+        "villages",
+        "cave mouths",
+        "ruins",
+        "wide establishing shots",
+        "symbolic dark fantasy scenes",
+        "mood-heavy lore visuals"
+      ],
+      "do_not_use_for": [
+        "strict hand action",
+        "specific child drawing action",
+        "exact subject-count scenes",
+        "scenes where forbidden objects repeatedly appear"
+      ],
+      "observed_strengths": [
+        "strong dark fantasy mood",
+        "good atmosphere",
+        "good cinematic environments",
+        "good thumbnail-like landscapes"
+      ],
+      "observed_failures": [
+        "weak obedience on exact hard action beats",
+        "drifted on child hand drawing symbol",
+        "ignored no-horse constraint",
+        "missed some very specific scene blocking"
+      ]
+    },
+    "hard_control_candidate_flux": {
+      "model_id": "28aeddf8-bd19-4803-80fc-79602d1a9989",
+      "model_name": "FLUX.1 Kontext",
+      "status": "tested_not_approved_for_scene_7",
+      "use_for": [],
+      "do_not_use_for": [
+        "current hard close-up symbol drawing scenes",
+        "scene 7 style tests until further evidence"
+      ],
+      "observed_strengths": [
+        "Leonardo model list describes it as precise and controllable"
+      ],
+      "observed_failures": [
+        "failed to produce the child hand drawing scene",
+        "drifted toward empty room and object/pyramid-like composition"
+      ]
+    },
+    "hard_control_candidate_phoenix": {
+      "model_id": "de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3",
+      "model_name": "Phoenix 1.0",
+      "status": "candidate_for_hard_symbolic_closeups_with_human_review",
+      "use_for": [
+        "one-off tests for hard action beats",
+        "symbol drawing close-ups",
+        "hand/action scenes when SDXL repeatedly fails"
+      ],
+      "do_not_use_for": [
+        "automatic full-batch generation without visual review",
+        "style replacement for the whole channel without approval"
+      ],
+      "observed_strengths": [
+        "hit the hand-drawing-symbol beat better than SDXL and FLUX",
+        "clear action readability",
+        "strong focal point"
+      ],
+      "observed_failures": [
+        "may drift into graphic novel or comic-like rendering",
+        "may introduce signature/stamp-like artifacts",
+        "requires style consistency review before approval"
+      ]
+    }
+  },
+  "scene_risk_categories": {
+    "low_risk": [
+      "wide landscapes",
+      "villages",
+      "cave exteriors",
+      "ancient bridges",
+      "ritual chambers",
+      "symbolic still-life objects",
+      "foggy city shots"
+    ],
+    "high_risk": [
+      "hands drawing",
+      "children actively performing actions",
+      "exact subject counts",
+      "no-horse or no-object constraints",
+      "dead or lifeless posture",
+      "precise facial emotion",
+      "recurring symbol close-ups"
+    ]
+  },
+  "selection_rules": [
+    "Use SDXL 1.0 for standard atmospheric scenes unless a better approved model is documented.",
+    "Do not use failed model tests as production assets.",
+    "Do not switch a video or channel style globally based on one good image.",
+    "High-risk scenes require one-image model testing before full regeneration.",
+    "A model can only be promoted after human review approves both beat match and channel style consistency.",
+    "Every generated manifest must store model_id, model_name if available, compiled_prompt, negative_prompt, beat_lock_used, and channel_style_used.",
+    "Never burn credits repeatedly on the same failed prompt and same model without changing the strategy."
+  ],
+  "promotion_requirements": {
+    "minimum_tests_before_model_promotion": 3,
+    "must_pass": [
+      "story beat match",
+      "channel style consistency",
+      "no forbidden drift",
+      "no watermark, stamp, logo, or fake text artifact",
+      "production-grade composition",
+      "repeatable enough for future use"
+    ]
+  },
+  "long_running_rule": "This policy exists because Ember & Stone is intended to run indefinitely. Model selection must protect long-term quality, cost control, visual consistency, and recovery from failed generations."
+}

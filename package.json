@@ -34,6 +34,7 @@
                     "preview:failed-image-prompts":  "node scripts/preview-failed-image-prompts.mjs",
                     "test:model-scene7-flux":  "node scripts/test-leonardo-model-scene7.mjs",
                     "test:model-scene7-phoenix":  "node scripts/test-leonardo-model-scene7-phoenix.mjs",
-                    "validate:channel-style":  "node scripts/validate-channel-style.mjs"
+                    "validate:channel-style":  "node scripts/validate-channel-style.mjs",
+                    "validate:image-model-policy":  "node scripts/validate-image-model-policy.mjs"
                 }
 }

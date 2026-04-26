@@ -474,3 +474,18 @@ Every image must satisfy both:
 - It visually belongs to the permanent Ember & Stone channel identity.
 
 The channel style bible and machine-readable channel-style.json are source-of-truth files. Future image prompts should inherit the channel consistency lock before episode-specific and scene-specific instructions.
+
+## New Verified Rule: Image Model Policy Is Required
+
+Ember & Stone should not blindly use one image model for every scene type.
+
+Verified observations:
+
+- SDXL 1.0 works well for atmospheric dark fantasy scenes.
+- SDXL 1.0 struggled with hard action constraints such as hand drawing, exact subject counts, and no-horse instructions.
+- FLUX.1 Kontext was tested on scene 7 and did not pass.
+- Phoenix 1.0 was tested on scene 7 and produced better action clarity, but still needs style consistency review before automatic use.
+
+Rule:
+
+Use a documented image model policy. High-risk scenes require small one-image tests before full regeneration. Do not repeatedly spend credits on the same failed prompt/model combination without changing strategy.
