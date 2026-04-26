@@ -1,0 +1,53 @@
+{
+    "channel":  {
+                    "name":  "Ember \u0026 Stone",
+                    "handle":  "@emberstoneaudio",
+                    "niche":  "faceless dark fantasy lore and TTRPG story hooks",
+                    "brand_voice":  "cinematic, ominous, mythic, clear, story-first",
+                    "content_safety_rule":  "Use original dark fantasy lore concepts. Avoid official D\u0026D names, settings, stat blocks, copied text, official art, or claims of affiliation."
+                },
+    "publishing":  {
+                       "initial_launch_video_count":  2,
+                       "daily_publish_count":  1,
+                       "schedule_mode":  "daily_after_launch",
+                       "default_publish_time_local":  "15:00",
+                       "timezone":  "America/New_York"
+                   },
+    "youtube":  {
+                    "visibility":  "private",
+                    "category_id":  "24",
+                    "made_for_kids":  false,
+                    "license":  "youtube",
+                    "embeddable":  true,
+                    "public_stats_viewable":  true
+                },
+    "metadata_defaults":  {
+                              "title_suffix":  "| Dark Fantasy Lore | Ember \u0026 Stone",
+                              "description_footer":  "Ember \u0026 Stone creates original dark fantasy lore, cursed places, strange myths, and TTRPG-ready story inspiration. This is unofficial original fantasy content and is not affiliated with Wizards of the Coast or any official tabletop publisher.",
+                              "tags":  [
+                                           "dark fantasy lore",
+                                           "fantasy lore",
+                                           "ttrpg lore",
+                                           "dnd inspiration",
+                                           "dungeon master ideas",
+                                           "fantasy worldbuilding",
+                                           "tabletop rpg",
+                                           "rpg story hooks",
+                                           "original fantasy",
+                                           "Ember and Stone"
+                                       ],
+                              "playlist_strategy":  "Create playlists by theme: Cursed Places, Dark Gods, Haunted Kingdoms, Monsters and Myths, TTRPG Story Hooks",
+                              "thumbnail_style":  "dark cinematic fantasy art, one focal subject, bold readable text, ember orange highlights, high contrast",
+                              "pinned_comment_template":  "Would you use this lore in your campaign? Tell me what the players would find first."
+                          },
+    "automation_targets":  {
+                               "generate_title":  true,
+                               "generate_description":  true,
+                               "generate_tags":  true,
+                               "generate_thumbnail":  true,
+                               "assign_playlist":  true,
+                               "schedule_publish_time":  true,
+                               "generate_pinned_comment":  true,
+                               "verify_channel_level_api_support_before_branding_changes":  true
+                           }
+}
