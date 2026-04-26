@@ -5,9 +5,7 @@
     "type":  "module",
     "description":  "Automated faceless dark fantasy lore video pipeline for Ember \u0026 Stone.",
     "scripts":  {
-                    "validate:state":  "node scripts/validate-state.mjs",
                     "select:topics":  "node scripts/select-topics.mjs",
-                    "check:topics":  "node scripts/check-topic-duplicates.mjs",
                     "generate:script-packages":  "node scripts/generate-script-packages.mjs",
                     "generate:ai-prompts":  "node scripts/generate-ai-scripts.mjs --dry-run",
                     "generate:ai-scripts":  "node scripts/generate-ai-scripts.mjs",
@@ -15,6 +13,10 @@
                     "tighten:scripts":  "node scripts/tighten-script-drafts.mjs",
                     "generate:voice-packages":  "node scripts/generate-voice-packages.mjs",
                     "list:voices":  "node scripts/list-elevenlabs-voices.mjs",
-                    "test:voice":  "node scripts/generate-elevenlabs-test-audio.mjs"
+                    "test:voice":  "node scripts/generate-elevenlabs-test-audio.mjs",
+                    "validate:state":  "node scripts/validate-state.mjs",
+                    "check:topics":  "node scripts/check-topic-duplicates.mjs",
+                    "generate:audio":  "node scripts/generate-elevenlabs-narration-audio.mjs",
+                    "audit:audio":  "node scripts/audit-audio-status.mjs"
                 }
 }
