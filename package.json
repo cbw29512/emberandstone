@@ -10,6 +10,7 @@
     "generate:script-packages": "node scripts/generate-script-packages.mjs",
     "generate:ai-prompts": "node scripts/generate-ai-scripts.mjs --dry-run",
     "generate:ai-scripts": "node scripts/generate-ai-scripts.mjs",
-    "repair:city-script": "node scripts/repair-ai-script-json.mjs city-that-erased-its-own-name"
+    "repair:city-script": "node scripts/repair-ai-script-json.mjs city-that-erased-its-own-name",
+    "generate:voice-packages": "node scripts/generate-voice-packages.mjs"
   }
 }
