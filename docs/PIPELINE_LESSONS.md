@@ -374,3 +374,17 @@ Rule:
 
 Run audit:image-prompts after generate:image-prompts and before any paid image generation.
 Blank thumbnail, blank scene summaries, or blank image prompts are hard failures.
+
+## New Verified Rule: Length Is Guidance, Story Quality Is the Gate
+
+A rigid exact word count is the wrong production target for Ember & Stone.
+
+The stories should feel natural, complete, focused, and viral. A couple minutes in either direction is acceptable if the story is stronger.
+
+Rule:
+
+- Do not force every story into the same exact length.
+- Do not cut strong story moments just to hit an arbitrary word count.
+- Use target ranges for cost and planning.
+- Use story quality, focus, structure, pacing, IP safety, scene alignment, and human review as hard gates.
+- Length should trigger review only when it causes dragging, repetition, rushed pacing, or incomplete payoff.

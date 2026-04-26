@@ -224,3 +224,25 @@ Verified build lessons, known failures, working rules, and repeatable setup note
 docs/PIPELINE_LESSONS.md
 
 Future work must update that file whenever a new step works, fails, or reveals a reusable rule.
+
+## Quality-First Length Policy
+
+Story length is guidance, not a hard production gate.
+
+Ember & Stone videos should usually aim for a natural 7 to 11 minute range, but a story may run a couple minutes shorter or longer if the story is stronger that way.
+
+Do not damage pacing, emotion, clarity, mystery, or viral potential just to hit an exact word count.
+
+The hard gates are:
+
+1. strong hook
+2. clear beginning
+3. escalating middle
+4. summary / tie-together
+5. satisfying ending or campaign-ready unresolved threat
+6. single focused topic
+7. original/IP-safe lore
+8. narration and visuals aligned
+9. human review approval
+
+Length should only trigger review if it creates a real quality problem, such as dragging, repetition, rushed setup, or incomplete payoff.

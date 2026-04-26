@@ -1,4 +1,4 @@
-﻿// scripts/repair-scene-alignment.mjs
+// scripts/repair-scene-alignment.mjs
 // Purpose: Repair known scene/narration alignment issues without changing narration.
 // Why: Existing paid voice audio must stay valid unless narration is intentionally remade.
 
@@ -19,7 +19,10 @@ function updateTighteningPolicy(draft) {
       production_target_words: 1200,
       preferred_max_words: tightening.preferred_max_words || 1200,
       acceptable_max_words: tightening.acceptable_max_words || 1350,
-      policy_note: "Accepted if narration is production-tight and at or below acceptable_max_words. Editorial target is a goal, not a hard failure."
+      policy_note: "Length is guidance, not a hard gate. Accept stories that are natural, focused, complete, and production-tight even if they run a couple minutes shorter or longer.",
+      quality_first_length_policy: true,
+      preferred_duration_minutes: "7-11",
+      acceptable_duration_minutes: "6-12"
     }
   };
 }

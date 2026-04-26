@@ -1,4 +1,4 @@
-﻿// scripts/lib/script-tightening-core.mjs
+// scripts/lib/script-tightening-core.mjs
 // Purpose: Tighten one script draft while keeping the JSON structure controlled by code.
 // Why: Models should write prose; code should own JSON and state.
 
@@ -7,9 +7,9 @@ import { readJson, writeJson, logInfo } from "./json-utils.mjs";
 import { callAnthropicMessage } from "./anthropic-client.mjs";
 import { cleanNarration, countWords, sentenceTrim } from "./narration-utils.mjs";
 
-const TARGET_WORDS = 950;
-const PREFERRED_MAX_WORDS = 1200;
-const ACCEPTABLE_MAX_WORDS = 1350;
+const TARGET_WORDS = 1200;
+const PREFERRED_MAX_WORDS = 1500;
+const ACCEPTABLE_MAX_WORDS = 1800;
 const MAX_ATTEMPTS = 3;
 
 function buildPrompt(projectContext, topic, currentNarration, attemptNumber) {
@@ -31,8 +31,8 @@ function buildPrompt(projectContext, topic, currentNarration, attemptNumber) {
     "- Do not return JSON.",
     "- Do not use markdown.",
     "- Do not include labels.",
-    "- Target about " + TARGET_WORDS + " words.",
-    "- Prefer under " + PREFERRED_MAX_WORDS + " words.",
+    "- Aim for a natural story length around " + TARGET_WORDS + " words, but do not damage story quality to hit a number.",
+    "- Prefer under " + PREFERRED_MAX_WORDS + " words, but quality, focus, and completeness matter more than exact length.",
     "- Cut filler, repeated warnings, repeated lore, and slow setup.",
     "- Keep the hook strong in the first 10 seconds.",
     "- Keep it original fantasy lore, not official D&D lore.",

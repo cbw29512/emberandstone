@@ -1,4 +1,4 @@
-﻿// scripts/audit-scene-alignment.mjs
+// scripts/audit-scene-alignment.mjs
 // Purpose: Block visuals if scene prompts drift away from narration.
 // Why: Visuals must support the spoken story, not invent disconnected content.
 
@@ -61,12 +61,12 @@ function auditWordPolicy(topic, draft) {
   const failures = [];
   const tightening = draft.tightening || {};
 
-  if (tightening.production_target_words !== 1200) {
-    failures.push("Missing production_target_words metadata set to 1200.");
+  if (!tightening.policy_note) {
+    failures.push("Missing tightening policy note explaining quality-first length policy.");
   }
 
-  if (!tightening.policy_note) {
-    failures.push("Missing tightening policy note explaining target vs acceptable range.");
+  if (tightening.quality_first_length_policy !== true) {
+    failures.push("Missing quality_first_length_policy metadata.");
   }
 
   return failures;
