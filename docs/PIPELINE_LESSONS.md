@@ -507,3 +507,19 @@ Rule:
 - Confirm the Git working tree is clean.
 
 Paid generation should not start from a dirty repo, missing source-of-truth files, missing key, or failed prompt/model/style gates.
+
+## New Verified Rule: Line Count Rule Is A Soft Guardrail
+
+The old 150-line rule was too strict for simple focused utility files.
+
+Updated rule:
+
+- 150 lines is the preferred target.
+- 151 to 225 lines is acceptable when the file has one clear responsibility.
+- 226 to 300 lines should trigger a warning and future split planning.
+- Over 300 lines is a hard stop and must be split.
+- Split files by responsibility, not by an arbitrary exact number.
+- A focused renderer, validator, or utility can be slightly over 150 lines if it remains readable and single-purpose.
+- A file that mixes unrelated jobs must be split even if it is under the hard limit.
+
+For Ember & Stone, production momentum matters. Do not block a safe focused script over a tiny line-count overage.

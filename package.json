@@ -38,6 +38,7 @@
                     "validate:image-model-policy":  "node scripts/validate-image-model-policy.mjs",
                     "test:image-model-policy-loader":  "node scripts/test-image-model-policy-loader.mjs",
                     "preflight:paid-generation":  "node scripts/preflight-paid-generation.mjs",
-                    "review:visuals":  "node scripts/build-visual-review-packet.mjs"
+                    "review:visuals":  "node scripts/build-visual-review-packet.mjs",
+                    "render:review-videos":  "node scripts/render-review-videos.mjs"
                 }
 }
