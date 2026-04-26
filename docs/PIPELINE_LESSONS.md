@@ -330,3 +330,15 @@ Rule:
 Run scene alignment audit before image generation or video rendering.
 
 Do not generate visuals from scene prompts until scene summaries match the actual narration.
+
+## New Verified Rule: Image Prompts Require All Gates
+
+Image prompt packages should not be created just because scenes exist.
+
+Required gates before image prompt packaging:
+
+- story audit passed
+- scene alignment audit passed
+- usable narration audio exists
+
+If audio is quota-blocked, skip visual work for that topic until audio is available.
