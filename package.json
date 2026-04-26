@@ -41,6 +41,7 @@
                     "review:visuals":  "node scripts/build-visual-review-packet.mjs",
                     "validate:video-render-policy":  "node scripts/validate-video-render-policy.mjs",
                     "render:review-videos":  "node scripts/render-review-videos.mjs",
-                    "plan:visual-slots":  "node scripts/plan-final-visual-slots.mjs"
+                    "plan:visual-slots":  "node scripts/plan-final-visual-slots.mjs",
+                    "build:missing-visual-prompts":  "node scripts/build-missing-visual-prompts.mjs"
                 }
 }
