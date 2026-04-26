@@ -1,0 +1,20 @@
+{
+  "name": "ember-and-stone-pipeline",
+  "version": "1.0.0",
+  "description": "Automated D&D lore video generation pipeline for Ember & Stone YouTube channel",
+  "type": "module",
+  "scripts": {
+    "generate": "node scripts/generate-script.mjs && node scripts/generate-voice.mjs && node scripts/generate-images.mjs && node scripts/render-video.mjs && node scripts/generate-thumbnail.mjs && node scripts/upload-youtube.mjs",
+    "script-only": "node scripts/generate-script.mjs",
+    "test-voice": "node scripts/generate-voice.mjs",
+    "test-images": "node scripts/generate-images.mjs",
+    "test-render": "node scripts/render-video.mjs",
+    "test-thumbnail": "node scripts/generate-thumbnail.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.27.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

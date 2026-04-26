@@ -1,0 +1,162 @@
+[
+  {
+    "id": "001",
+    "title": "The God Who Wanted to Die",
+    "subject": "Jergal, the original god of death in the Forgotten Realms who willingly surrendered his divine portfolio to the Dead Three",
+    "hook": "A god so weary of his own existence he gave away his divinity to three mortals just to feel something",
+    "tone": "melancholic, ancient, tragic",
+    "status": "pending"
+  },
+  {
+    "id": "002",
+    "title": "Why Mind Flayers Eat Brains",
+    "subject": "The true origin and biology of Illithids, their elder brain dependency, tadpole lifecycle, and why they harvest humanoid intellect",
+    "hook": "The reason is more horrifying than hunger — it is memory theft on a cosmic scale",
+    "tone": "dark, scientific horror, unsettling",
+    "status": "pending"
+  },
+  {
+    "id": "003",
+    "title": "The Place Even Gods Fear",
+    "subject": "The Far Realm — what it is, what lives there, why it exists outside the Great Wheel cosmology, and what happens to those who peer into it",
+    "hook": "It is not a plane. It is not a dimension. It is something the multiverse was never meant to touch",
+    "tone": "cosmic horror, dread, mysterious",
+    "status": "pending"
+  },
+  {
+    "id": "004",
+    "title": "The Vampire Who Betrayed a God",
+    "subject": "Cazador Szarr and the dark history of vampirism in the Forgotten Realms, tracing back to Bhaal and the original curse",
+    "hook": "Vampirism was not always a curse. Once, it was a reward",
+    "tone": "gothic, sinister, historical",
+    "status": "pending"
+  },
+  {
+    "id": "005",
+    "title": "The True Horror of Liches",
+    "subject": "What a lich actually is, the phylactery process, what they sacrifice to achieve undeath, and the most powerful liches in D&D lore",
+    "hook": "To become a lich you must first murder your own soul — and that is only the beginning",
+    "tone": "dark, arcane horror, scholarly",
+    "status": "pending"
+  },
+  {
+    "id": "006",
+    "title": "Vecna Before He Became a God",
+    "subject": "The full origin story of Vecna — from orphaned mortal to archmage to lich to deity, and what he actually wants",
+    "hook": "He was not born evil. He was made into something worse",
+    "tone": "epic, tragic, dark",
+    "status": "pending"
+  },
+  {
+    "id": "007",
+    "title": "The City Built on a Dead God",
+    "subject": "Sigil and the Lady of Pain — the city at the center of the multiverse, who rules it, and why no god can enter",
+    "hook": "There is a city floating in the void where the gods themselves are banned on pain of death",
+    "tone": "mysterious, otherworldly, awe-inspiring",
+    "status": "pending"
+  },
+  {
+    "id": "008",
+    "title": "What Dragons Actually Are",
+    "subject": "The true cosmological origin of dragons in D&D — Io, the dragon god, Bahamut and Tiamat as his split aspects, and why dragons hoard",
+    "hook": "Dragons are not monsters. They are fragments of a murdered god",
+    "tone": "epic, mythological, grand",
+    "status": "pending"
+  },
+  {
+    "id": "009",
+    "title": "The Drow Who Defied Their Goddess",
+    "subject": "The history of the drow, Lolth's betrayal of the elven pantheon, and what the Underdark really is",
+    "hook": "The dark elves were not always dark. A single goddess poisoned an entire race",
+    "tone": "dark, political, tragic",
+    "status": "pending"
+  },
+  {
+    "id": "010",
+    "title": "The Forgotten Realm Nobody Talks About",
+    "subject": "The Shadowfell — its origin, its relationship to the Material Plane, the Raven Queen, and what happens to souls that get lost there",
+    "hook": "Every location on the Material Plane has a twisted reflection. Most people never realize they are being watched from it",
+    "tone": "eerie, melancholic, dark",
+    "status": "pending"
+  },
+  {
+    "id": "011",
+    "title": "The War That Broke the Heavens",
+    "subject": "The Dawn War between the gods and the primordials — the founding conflict of the D&D cosmology that shaped everything",
+    "hook": "Before mortals existed, gods and titans tore the universe apart. The scars are still there",
+    "tone": "epic, mythological, cataclysmic",
+    "status": "pending"
+  },
+  {
+    "id": "012",
+    "title": "What Happens When You Die in D&D",
+    "subject": "The actual cosmological journey of a soul after death — the Fugue Plane, the gods claiming souls, the Wall of the Faithless, and what happens to those nobody claims",
+    "hook": "Death in the D&D multiverse is not the end. For some souls, it is something far worse",
+    "tone": "philosophical, dark, haunting",
+    "status": "pending"
+  },
+  {
+    "id": "013",
+    "title": "The Demon Lord Who Was Once an Angel",
+    "subject": "Zariel's fall from celestial to Archduke of Avernus — one of the most tragic lore arcs in D&D",
+    "hook": "She volunteered to fight demons. The demons won",
+    "tone": "tragic, epic, dark",
+    "status": "pending"
+  },
+  {
+    "id": "014",
+    "title": "The Monster That Cannot Be Killed",
+    "subject": "The Tarrasque — what it actually is, its origin theories, why the gods won't destroy it, and what would really happen if it woke",
+    "hook": "The gods could destroy it. They choose not to. The reason is more unsettling than the monster itself",
+    "tone": "dread, cosmic, unsettling",
+    "status": "pending"
+  },
+  {
+    "id": "015",
+    "title": "The Nine Hells Are Not What You Think",
+    "subject": "The true structure of Baator, the Blood War, why devils corrupt souls rather than destroy them, and the economy of the Nine Hells",
+    "hook": "Hell is not a place of punishment. It is a machine — and souls are the fuel",
+    "tone": "dark, systemic horror, chilling",
+    "status": "pending"
+  },
+  {
+    "id": "016",
+    "title": "The Elves Who Became Monsters",
+    "subject": "The origin of the Yuan-Ti — once a human civilization that sacrificed their humanity to serpent gods for power",
+    "hook": "They were not born as snake people. They chose to become them",
+    "tone": "body horror, historical, dark",
+    "status": "pending"
+  },
+  {
+    "id": "017",
+    "title": "The Spell That Destroyed a World",
+    "subject": "The Spellplague — what caused it, what Mystra's death meant for the Forgotten Realms, and the century of chaos that followed",
+    "hook": "Magic is not a tool. It is a living force. And when it died, the world broke",
+    "tone": "apocalyptic, arcane, dramatic",
+    "status": "pending"
+  },
+  {
+    "id": "018",
+    "title": "The God of Murder's Secret Plan",
+    "subject": "Bhaal's scheme to return from death through the Bhaalspawn — why he seeded mortal children with his essence and what he ultimately wanted",
+    "hook": "He was killed by mortals. So he hid his soul inside mortal children and waited",
+    "tone": "sinister, conspiratorial, dark",
+    "status": "pending"
+  },
+  {
+    "id": "019",
+    "title": "What Aberrations Actually Are",
+    "subject": "The cosmological origin of aberrations — creatures from the Far Realm that broke into the multiverse and became the mind flayers, beholders, and worse",
+    "hook": "They do not belong here. They were never meant to exist in this reality. And yet here they are",
+    "tone": "cosmic horror, alien, unsettling",
+    "status": "pending"
+  },
+  {
+    "id": "020",
+    "title": "The Underdark Has No Bottom",
+    "subject": "The true depth and scope of the Underdark — its layers, what lives in the deepest regions, and what ancient civilizations are buried there",
+    "hook": "People think they know what lives underground. They have not dug deep enough",
+    "tone": "exploration, dread, mysterious",
+    "status": "pending"
+  }
+]

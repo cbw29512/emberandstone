@@ -1,0 +1,28 @@
+# Generated content (cleaned up after each run)
+content/narration.mp3
+content/final-video.mp4
+content/video-silent.mp4
+content/thumbnail.jpg
+content/current-script.json
+content/concat.txt
+content/clips-concat.txt
+content/images/
+
+# Keep these
+!content/topic-queue.json
+!content/published.json
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Env (never commit keys)
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Assets (music files can be large - add manually)
+assets/music/*.mp3

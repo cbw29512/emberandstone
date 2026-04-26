@@ -1,0 +1,64 @@
+name: Generate & Upload Lore Video
+
+on:
+  schedule:
+    - cron: '0 2 * * 0'  # Every Sunday at 2am UTC
+  workflow_dispatch:       # Manual trigger for testing
+
+jobs:
+  generate-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install FFmpeg
+        run: sudo apt-get install -y ffmpeg imagemagick
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate script
+        run: node scripts/generate-script.mjs
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Generate voiceover
+        run: node scripts/generate-voice.mjs
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+
+      - name: Generate images
+        run: node scripts/generate-images.mjs
+        env:
+          LEONARDO_API_KEY: ${{ secrets.LEONARDO_API_KEY }}
+
+      - name: Render video
+        run: node scripts/render-video.mjs
+
+      - name: Generate thumbnail
+        run: node scripts/generate-thumbnail.mjs
+
+      - name: Upload to YouTube
+        run: node scripts/upload-youtube.mjs
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+
+      - name: Commit updated queue
+        run: |
+          git config user.name "Ember & Stone Bot"
+          git config user.email "bot@emberstoneaudio.com"
+          git add content/topic-queue.json content/published.json
+          git diff --staged --quiet || git commit -m "chore: mark topic as published [skip ci]"
+          git push
