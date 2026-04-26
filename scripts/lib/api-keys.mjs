@@ -34,7 +34,6 @@ function parseKeyFile(rawText) {
 
 export function loadRuntimeConfig(rootDir, options = {}) {
   try {
-    const requireAnthropicKey = options.requireAnthropicKey === true;
     const apiKeyPath = path.join(rootDir, "APIKeys.txt");
 
     if (fs.existsSync(apiKeyPath)) {
@@ -48,16 +47,23 @@ export function loadRuntimeConfig(rootDir, options = {}) {
     }
 
     const anthropicApiKey = process.env.ANTHROPIC_API_KEY || "";
-    const anthropicModel = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6";
+    const elevenlabsApiKey = process.env.ELEVENLABS_API_KEY || "";
 
-    if (requireAnthropicKey && !anthropicApiKey) {
-      throw new Error("Missing ANTHROPIC_API_KEY. Add it to APIKeys.txt locally or GitHub Secrets.");
+    if (options.requireAnthropicKey === true && !anthropicApiKey) {
+      throw new Error("Missing ANTHROPIC_API_KEY.");
+    }
+
+    if (options.requireElevenLabsKey === true && !elevenlabsApiKey) {
+      throw new Error("Missing ELEVENLABS_API_KEY.");
     }
 
     return {
       anthropicApiKey,
-      anthropicModel,
-      anthropicEndpoint: "https://api.anthropic.com/v1/messages"
+      anthropicModel: process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6",
+      anthropicEndpoint: "https://api.anthropic.com/v1/messages",
+      elevenlabsApiKey,
+      elevenlabsVoiceId: process.env.ELEVENLABS_VOICE_ID || "",
+      elevenlabsEndpoint: "https://api.elevenlabs.io"
     };
   } catch (error) {
     throw new Error("Failed to load runtime config: " + error.message);

@@ -1,18 +1,19 @@
-﻿{
-  "name": "ember-and-stone",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "description": "Automated faceless dark fantasy lore video pipeline for Ember & Stone.",
-  "scripts": {
-    "validate:state": "node scripts/validate-state.mjs",
-    "select:topics": "node scripts/select-topics.mjs",
-    "check:topics": "node scripts/check-topic-duplicates.mjs",
-    "generate:script-packages": "node scripts/generate-script-packages.mjs",
-    "generate:ai-prompts": "node scripts/generate-ai-scripts.mjs --dry-run",
-    "generate:ai-scripts": "node scripts/generate-ai-scripts.mjs",
-    "repair:city-script": "node scripts/repair-ai-script-json.mjs city-that-erased-its-own-name",
-    "tighten:scripts": "node scripts/tighten-script-drafts.mjs",
-    "generate:voice-packages": "node scripts/generate-voice-packages.mjs"
-  }
+{
+    "name":  "ember-and-stone",
+    "version":  "0.1.0",
+    "private":  true,
+    "type":  "module",
+    "description":  "Automated faceless dark fantasy lore video pipeline for Ember \u0026 Stone.",
+    "scripts":  {
+                    "validate:state":  "node scripts/validate-state.mjs",
+                    "select:topics":  "node scripts/select-topics.mjs",
+                    "check:topics":  "node scripts/check-topic-duplicates.mjs",
+                    "generate:script-packages":  "node scripts/generate-script-packages.mjs",
+                    "generate:ai-prompts":  "node scripts/generate-ai-scripts.mjs --dry-run",
+                    "generate:ai-scripts":  "node scripts/generate-ai-scripts.mjs",
+                    "repair:city-script":  "node scripts/repair-ai-script-json.mjs city-that-erased-its-own-name",
+                    "tighten:scripts":  "node scripts/tighten-script-drafts.mjs",
+                    "generate:voice-packages":  "node scripts/generate-voice-packages.mjs",
+                    "list:voices":  "node scripts/list-elevenlabs-voices.mjs"
+                }
 }
