@@ -43,6 +43,7 @@
                     "render:review-videos":  "node scripts/render-review-videos.mjs",
                     "plan:visual-slots":  "node scripts/plan-final-visual-slots.mjs",
                     "build:missing-visual-prompts":  "node scripts/build-missing-visual-prompts.mjs",
-                    "audit:missing-visual-prompts":  "node scripts/audit-missing-visual-prompts.mjs"
+                    "audit:missing-visual-prompts":  "node scripts/audit-missing-visual-prompts.mjs",
+                    "generate:missing-visual-images":  "node scripts/generate-missing-visual-images.mjs"
                 }
 }
