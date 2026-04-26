@@ -342,3 +342,18 @@ Required gates before image prompt packaging:
 - usable narration audio exists
 
 If audio is quota-blocked, skip visual work for that topic until audio is available.
+
+## New Verified Lesson: Creator Plan Unblocked Second Narration
+
+After upgrading ElevenLabs to Creator, the second narration generated successfully.
+
+Verified behavior:
+
+- Forgotten God audio already existed and was skipped.
+- City audio generated successfully.
+- Audio available count became 2.
+- Audio quota-blocked count became 0.
+
+Rule:
+
+The idempotent audio generator works. It should remain mandatory before any paid voice generation so existing MP3 files are not regenerated accidentally.
