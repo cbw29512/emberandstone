@@ -44,6 +44,7 @@
                     "plan:visual-slots":  "node scripts/plan-final-visual-slots.mjs",
                     "build:missing-visual-prompts":  "node scripts/build-missing-visual-prompts.mjs",
                     "audit:missing-visual-prompts":  "node scripts/audit-missing-visual-prompts.mjs",
-                    "generate:missing-visual-images":  "node scripts/generate-missing-visual-images.mjs"
+                    "generate:missing-visual-images":  "node scripts/generate-missing-visual-images.mjs",
+                    "review:missing-unique":  "node scripts/build-missing-unique-review.mjs"
                 }
 }
