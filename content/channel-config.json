@@ -49,5 +49,18 @@
                                "schedule_publish_time":  true,
                                "generate_pinned_comment":  true,
                                "verify_channel_level_api_support_before_branding_changes":  true
-                           }
+                           },
+    "visual_strategy":  {
+                            "primary_format":  "cinematic_scene_images_with_motion",
+                            "avatar_usage":  "optional_lorekeeper_intro_outro_only",
+                            "avatar_rule":  "Do not use a full-time talking head. Use a lorekeeper avatar only for short branding moments unless testing proves better retention.",
+                            "motion_style":  "slow zooms, pans, fog, torchlight, particles, subtle parallax",
+                            "retention_elements":  [
+                                                       "strong opening image",
+                                                       "scene-based visuals",
+                                                       "key phrase text overlays",
+                                                       "subtle movement every few seconds",
+                                                       "final question for comments"
+                                                   ]
+                        }
 }
