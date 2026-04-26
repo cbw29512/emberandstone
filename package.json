@@ -18,6 +18,7 @@
                     "check:topics":  "node scripts/check-topic-duplicates.mjs",
                     "generate:audio":  "node scripts/generate-elevenlabs-narration-audio.mjs",
                     "audit:audio":  "node scripts/audit-audio-status.mjs",
+                    "audit:story":  "node scripts/audit-story-structure.mjs",
                     "audit:production":  "node scripts/audit-production-readiness.mjs"
                 }
 }
