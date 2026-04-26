@@ -45,6 +45,7 @@
                     "build:missing-visual-prompts":  "node scripts/build-missing-visual-prompts.mjs",
                     "audit:missing-visual-prompts":  "node scripts/audit-missing-visual-prompts.mjs",
                     "generate:missing-visual-images":  "node scripts/generate-missing-visual-images.mjs",
-                    "review:missing-unique":  "node scripts/build-missing-unique-review.mjs"
+                    "review:missing-unique":  "node scripts/build-missing-unique-review.mjs",
+                    "merge:approved-missing-visuals":  "node scripts/merge-approved-missing-visuals.mjs"
                 }
 }
