@@ -36,6 +36,7 @@
                     "test:model-scene7-phoenix":  "node scripts/test-leonardo-model-scene7-phoenix.mjs",
                     "validate:channel-style":  "node scripts/validate-channel-style.mjs",
                     "validate:image-model-policy":  "node scripts/validate-image-model-policy.mjs",
-                    "test:image-model-policy-loader":  "node scripts/test-image-model-policy-loader.mjs"
+                    "test:image-model-policy-loader":  "node scripts/test-image-model-policy-loader.mjs",
+                    "preflight:paid-generation":  "node scripts/preflight-paid-generation.mjs"
                 }
 }

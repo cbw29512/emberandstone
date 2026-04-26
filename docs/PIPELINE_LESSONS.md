@@ -489,3 +489,21 @@ Verified observations:
 Rule:
 
 Use a documented image model policy. High-risk scenes require small one-image tests before full regeneration. Do not repeatedly spend credits on the same failed prompt/model combination without changing strategy.
+
+## New Verified Rule: Paid Generation Requires Preflight
+
+Before any paid image generation, run the no-credit preflight gate.
+
+Rule:
+
+- Validate channel style canon.
+- Validate image model policy.
+- Test image model policy loader.
+- Test beat-locked prompt compiler.
+- Run strict image prompt audit.
+- Preview compiled prompts.
+- Confirm APIKeys.txt is gitignored.
+- Confirm Leonardo key exists without printing it.
+- Confirm the Git working tree is clean.
+
+Paid generation should not start from a dirty repo, missing source-of-truth files, missing key, or failed prompt/model/style gates.
