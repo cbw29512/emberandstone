@@ -14,6 +14,7 @@
                     "repair:city-script":  "node scripts/repair-ai-script-json.mjs city-that-erased-its-own-name",
                     "tighten:scripts":  "node scripts/tighten-script-drafts.mjs",
                     "generate:voice-packages":  "node scripts/generate-voice-packages.mjs",
-                    "list:voices":  "node scripts/list-elevenlabs-voices.mjs"
+                    "list:voices":  "node scripts/list-elevenlabs-voices.mjs",
+                    "test:voice":  "node scripts/generate-elevenlabs-test-audio.mjs"
                 }
 }
