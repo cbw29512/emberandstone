@@ -1,0 +1,10 @@
+﻿{
+  "name": "ember-and-stone",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Automated faceless dark fantasy lore video pipeline for Ember & Stone.",
+  "scripts": {
+    "validate:state": "node scripts/validate-state.mjs"
+  }
+}
