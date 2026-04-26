@@ -536,3 +536,14 @@ Verified issue:
 Rule:
 
 Try available video encoders in order and record the encoder used in the render manifest.
+
+## New Verified Rule: 25-Second Visual Cadence
+
+For Ember & Stone lore review videos, do not leave a single still image on screen for around a minute.
+
+Current production target:
+
+- target_seconds_per_image = 25
+- if there are not enough unique images, repeat images to fill the audio duration
+- distribute slot timing across the full narration duration
+- assembled video review matters more than judging stills in isolation

@@ -1,0 +1,6 @@
+{
+  "target_seconds_per_image": 25,
+  "minimum_seconds_per_image": 12,
+  "maximum_seconds_per_image": 30,
+  "repeat_images_to_fill_audio": true
+}

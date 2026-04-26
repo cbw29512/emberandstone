@@ -1,9 +1,10 @@
-﻿// scripts/lib/review-video-renderer.mjs
+// scripts/lib/review-video-renderer.mjs
 // Purpose: Render local MP4 review videos from final images and narration audio.
 
 import fs from "node:fs/promises";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { readVideoRenderPolicy } from "./video-render-policy.mjs";
 
 function logInfo(message) {
   console.log("[INFO] " + message);
@@ -15,7 +16,10 @@ function fail(message) {
 
 function run(command, args, label) {
   const result = spawnSync(command, args, { encoding: "utf8", shell: false });
-  if (result.error) fail(label + " failed to start: " + result.error.message);
+
+  if (result.error) {
+    fail(label + " failed to start: " + result.error.message);
+  }
 
   return {
     ok: result.status === 0,
@@ -26,7 +30,11 @@ function run(command, args, label) {
 
 function runRequired(command, args, label) {
   const result = run(command, args, label);
-  if (!result.ok) fail(label + " failed: " + result.stderr);
+
+  if (!result.ok) {
+    fail(label + " failed: " + result.stderr);
+  }
+
   return result.stdout;
 }
 
@@ -50,15 +58,17 @@ async function pathExists(filePath) {
 
 async function getTopicIds(rootDir) {
   const audioRoot = path.join(rootDir, "output", "audio");
-  if (!(await pathExists(audioRoot))) fail("Missing audio folder: " + audioRoot);
+
+  if (!(await pathExists(audioRoot))) {
+    fail("Missing audio folder: " + audioRoot);
+  }
 
   const entries = await fs.readdir(audioRoot, { withFileTypes: true });
   return entries.filter((entry) => entry.isDirectory()).map((entry) => entry.name);
 }
 
 function encoderList() {
-  const result = runRequired("ffmpeg", ["-hide_banner", "-encoders"], "ffmpeg encoder list");
-  return result;
+  return runRequired("ffmpeg", ["-hide_banner", "-encoders"], "ffmpeg encoder list");
 }
 
 function hasEncoder(encoders, name) {
@@ -89,40 +99,63 @@ function getAudioDuration(audioFile) {
   ], "ffprobe audio duration");
 
   const duration = Number(output);
-  if (!Number.isFinite(duration) || duration <= 0) fail("Invalid audio duration: " + audioFile);
+
+  if (!Number.isFinite(duration) || duration <= 0) {
+    fail("Invalid audio duration: " + audioFile);
+  }
+
   return duration;
 }
 
 async function getSceneImages(finalImageDir) {
   const files = await fs.readdir(finalImageDir);
+
   return files
     .filter((file) => /^scene-\d+\.jpg$/.test(file))
     .sort((a, b) => sceneNumber(a) - sceneNumber(b))
     .map((file) => path.join(finalImageDir, file));
 }
 
-async function writeConcatFile(concatFile, sceneImages, secondsPerScene) {
-  const lines = [];
+function buildRenderSequence(sceneImages, duration, policy) {
+  const slotCount = Math.max(sceneImages.length, Math.ceil(duration / policy.target_seconds_per_image));
 
-  for (const image of sceneImages) {
-    lines.push("file '" + ffPath(image) + "'");
-    lines.push("duration " + secondsPerScene.toFixed(3));
+  if (!policy.repeat_images_to_fill_audio && slotCount > sceneImages.length) {
+    fail("Not enough images to satisfy cadence without repeats.");
   }
 
-  lines.push("file '" + ffPath(sceneImages[sceneImages.length - 1]) + "'");
-  await fs.writeFile(concatFile, lines.join("\n"));
+  const sequence = [];
+
+  for (let index = 0; index < slotCount; index += 1) {
+    sequence.push(sceneImages[index % sceneImages.length]);
+  }
+
+  const secondsPerSlot = duration / slotCount;
+
+  if (secondsPerSlot < policy.minimum_seconds_per_image) {
+    fail("Calculated seconds_per_slot fell below minimum_seconds_per_image.");
+  }
+
+  if (secondsPerSlot > policy.maximum_seconds_per_image) {
+    fail("Calculated seconds_per_slot exceeded maximum_seconds_per_image.");
+  }
+
+  return {
+    renderSequence: sequence,
+    slotCount,
+    secondsPerSlot
+  };
 }
 
-function baseFfmpegArgs(concatFile, audioFile, outputVideo) {
-  return [
-    "-y",
-    "-f", "concat",
-    "-safe", "0",
-    "-i", concatFile,
-    "-i", audioFile,
-    "-vf", "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,format=yuv420p",
-    "-r", "30"
-  ];
+async function writeConcatFile(concatFile, renderSequence, secondsPerSlot) {
+  const lines = [];
+
+  for (const image of renderSequence) {
+    lines.push("file '" + ffPath(image) + "'");
+    lines.push("duration " + secondsPerSlot.toFixed(3));
+  }
+
+  lines.push("file '" + ffPath(renderSequence[renderSequence.length - 1]) + "'");
+  await fs.writeFile(concatFile, lines.join("\n"));
 }
 
 function renderWithFfmpeg(concatFile, audioFile, outputVideo, topicId) {
@@ -138,7 +171,13 @@ function renderWithFfmpeg(concatFile, audioFile, outputVideo, topicId) {
     logInfo("Trying video encoder for " + topicId + ": " + profile.name);
 
     const args = [
-      ...baseFfmpegArgs(concatFile, audioFile, outputVideo),
+      "-y",
+      "-f", "concat",
+      "-safe", "0",
+      "-i", concatFile,
+      "-i", audioFile,
+      "-vf", "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,format=yuv420p",
+      "-r", "30",
       ...profile.args,
       "-c:a", "aac",
       "-b:a", "192k",
@@ -160,7 +199,7 @@ function renderWithFfmpeg(concatFile, audioFile, outputVideo, topicId) {
   fail("All FFmpeg encoder attempts failed for " + topicId + ". Last error: " + lastError);
 }
 
-async function renderTopic(rootDir, topicId) {
+async function renderTopic(rootDir, topicId, policy) {
   const audioFile = path.join(rootDir, "output", "audio", topicId, "narration.mp3");
   const finalImageDir = path.join(rootDir, "output", "images", "final", topicId);
   const outputDir = path.join(rootDir, "output", "videos", "review", topicId);
@@ -175,10 +214,10 @@ async function renderTopic(rootDir, topicId) {
   if (sceneImages.length === 0) fail("No scene images found for: " + topicId);
 
   const duration = getAudioDuration(audioFile);
-  const secondsPerScene = duration / sceneImages.length;
+  const build = buildRenderSequence(sceneImages, duration, policy);
 
   await fs.mkdir(outputDir, { recursive: true });
-  await writeConcatFile(concatFile, sceneImages, secondsPerScene);
+  await writeConcatFile(concatFile, build.renderSequence, build.secondsPerSlot);
 
   const encoder = renderWithFfmpeg(concatFile, audioFile, outputVideo, topicId);
 
@@ -186,10 +225,13 @@ async function renderTopic(rootDir, topicId) {
     topic_id: topicId,
     status: "rendered_for_human_review",
     audio_file: audioFile,
-    scene_images: sceneImages,
-    scene_count: sceneImages.length,
+    source_scene_images: sceneImages,
+    source_scene_count: sceneImages.length,
+    render_sequence_images: build.renderSequence,
+    render_slot_count: build.slotCount,
+    target_seconds_per_image: policy.target_seconds_per_image,
+    seconds_per_slot: build.secondsPerSlot,
     duration_seconds: duration,
-    seconds_per_scene: secondsPerScene,
     video_encoder: encoder,
     output_video: outputVideo,
     created_at: new Date().toISOString()
@@ -201,10 +243,11 @@ async function renderTopic(rootDir, topicId) {
 
 export async function renderReviewVideos(rootDir) {
   const topicIds = await getTopicIds(rootDir);
+  const policy = await readVideoRenderPolicy(rootDir);
   const rendered = [];
 
   for (const topicId of topicIds) {
-    rendered.push(await renderTopic(rootDir, topicId));
+    rendered.push(await renderTopic(rootDir, topicId, policy));
   }
 
   return rendered;
