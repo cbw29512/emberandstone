@@ -313,3 +313,20 @@ For a new subject, repeat this setup:
 ## Rule for Future Updates
 
 Whenever something works, fails, or teaches a repeatable rule, update this file and push it to GitHub before moving too far ahead.
+
+## New Verified Lesson: Scene Alignment Must Be Audited
+
+Story audit can pass while scene metadata still contains a visual/narration mismatch.
+
+Verified issue:
+
+- Forgotten God Scene 6 referenced Descent Progression content.
+- The actual narration did not include that content.
+- Changing narration would invalidate already-generated voice audio.
+- Correct fix was to repair scene metadata/prompts to match the existing narration.
+
+Rule:
+
+Run scene alignment audit before image generation or video rendering.
+
+Do not generate visuals from scene prompts until scene summaries match the actual narration.

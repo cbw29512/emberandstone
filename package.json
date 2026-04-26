@@ -19,6 +19,8 @@
                     "generate:audio":  "node scripts/generate-elevenlabs-narration-audio.mjs",
                     "audit:audio":  "node scripts/audit-audio-status.mjs",
                     "audit:story":  "node scripts/audit-story-structure.mjs",
-                    "audit:production":  "node scripts/audit-production-readiness.mjs"
+                    "audit:production":  "node scripts/audit-production-readiness.mjs",
+                    "repair:scene-alignment":  "node scripts/repair-scene-alignment.mjs",
+                    "audit:scene-alignment":  "node scripts/audit-scene-alignment.mjs"
                 }
 }
