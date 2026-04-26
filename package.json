@@ -6,6 +6,7 @@
   "description": "Automated faceless dark fantasy lore video pipeline for Ember & Stone.",
   "scripts": {
     "validate:state": "node scripts/validate-state.mjs",
-    "select:topics": "node scripts/select-topics.mjs"
+    "select:topics": "node scripts/select-topics.mjs",
+    "generate:script-packages": "node scripts/generate-script-packages.mjs"
   }
 }
