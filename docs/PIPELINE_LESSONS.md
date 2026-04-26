@@ -461,3 +461,16 @@ Rule:
 - Hard blockers: failing syntax checks, failing unit tests, failed audits, broken state, bad images, script drift, IP risk, missing assets.
 - Soft warnings: a config-heavy script being longer than preferred.
 - Split long files later when maintainability is the actual problem, not while trying to preserve creative momentum.
+
+## New Verified Rule: Channel-Wide Visual Canon Is Required
+
+Ember & Stone is a long-running channel, not a one-off video project.
+
+Rule:
+
+Every image must satisfy both:
+
+- It clearly communicates the intended script beat.
+- It visually belongs to the permanent Ember & Stone channel identity.
+
+The channel style bible and machine-readable channel-style.json are source-of-truth files. Future image prompts should inherit the channel consistency lock before episode-specific and scene-specific instructions.

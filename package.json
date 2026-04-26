@@ -33,6 +33,7 @@
                     "migrate:beat-lock-prompts":  "node scripts/migrate-launch-prompts-to-beat-lock.mjs",
                     "preview:failed-image-prompts":  "node scripts/preview-failed-image-prompts.mjs",
                     "test:model-scene7-flux":  "node scripts/test-leonardo-model-scene7.mjs",
-                    "test:model-scene7-phoenix":  "node scripts/test-leonardo-model-scene7-phoenix.mjs"
+                    "test:model-scene7-phoenix":  "node scripts/test-leonardo-model-scene7-phoenix.mjs",
+                    "validate:channel-style":  "node scripts/validate-channel-style.mjs"
                 }
 }
