@@ -357,3 +357,20 @@ Verified behavior:
 Rule:
 
 The idempotent audio generator works. It should remain mandatory before any paid voice generation so existing MP3 files are not regenerated accidentally.
+
+## New Verified Lesson: Image Prompt Packages Must Be Audited for Blank Fields
+
+A package can exist while every scene prompt is blank.
+
+Verified issue:
+
+- image-prompt-package.json existed
+- thumbnail_prompt was blank
+- scene titles were Untitled scene
+- narration summaries were blank
+- image prompts were blank
+
+Rule:
+
+Run audit:image-prompts after generate:image-prompts and before any paid image generation.
+Blank thumbnail, blank scene summaries, or blank image prompts are hard failures.

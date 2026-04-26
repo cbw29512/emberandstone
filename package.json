@@ -22,6 +22,7 @@
                     "audit:production":  "node scripts/audit-production-readiness.mjs",
                     "repair:scene-alignment":  "node scripts/repair-scene-alignment.mjs",
                     "audit:scene-alignment":  "node scripts/audit-scene-alignment.mjs",
-                    "generate:image-prompts":  "node scripts/generate-image-prompt-packages.mjs"
+                    "generate:image-prompts":  "node scripts/generate-image-prompt-packages.mjs",
+                    "audit:image-prompts":  "node scripts/audit-image-prompts.mjs"
                 }
 }
