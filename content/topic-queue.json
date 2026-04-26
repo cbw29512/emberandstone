@@ -1,1 +1,158 @@
-[]
+[
+    {
+        "id":  "forgotten-god-under-mountain",
+        "title":  "The Forgotten God Beneath the Mountain",
+        "status":  "queued",
+        "priority":  1,
+        "video_type":  "longform",
+        "risk_level":  "safe",
+        "source_notes":  [
+                             "Original dark fantasy lore concept",
+                             "Avoid official D\u0026D names/settings/stat blocks"
+                         ],
+        "created_at":  "2026-04-26T00:00:00Z"
+    },
+    {
+        "id":  "city-that-erased-its-own-name",
+        "title":  "The City That Erased Its Own Name",
+        "status":  "queued",
+        "priority":  2,
+        "video_type":  "longform",
+        "risk_level":  "safe",
+        "source_notes":  [
+                             "Original cursed-city premise",
+                             "Usable for fantasy/TTRPG audience without official IP"
+                         ],
+        "created_at":  "2026-04-26T00:00:00Z"
+    },
+    {
+        "id":  "king-who-fed-his-shadow",
+        "title":  "The King Who Fed His Shadow",
+        "status":  "queued",
+        "priority":  3,
+        "video_type":  "longform",
+        "risk_level":  "safe",
+        "source_notes":  [
+                             "Original dark monarchy story",
+                             "No official franchise lore"
+                         ],
+        "created_at":  "2026-04-26T00:00:00Z"
+    },
+    {
+        "id":  "forest-that-hunts-with-human-voices",
+        "title":  "The Forest That Hunts With Human Voices",
+        "status":  "queued",
+        "priority":  4,
+        "video_type":  "longform",
+        "risk_level":  "safe",
+        "source_notes":  [
+                             "Original haunted wilderness premise",
+                             "Good for cinematic narration and AI visuals"
+                         ],
+        "created_at":  "2026-04-26T00:00:00Z"
+    },
+    {
+        "id":  "prison-built-for-a-dead-angel",
+        "title":  "The Prison Built for a Dead Angel",
+        "status":  "queued",
+        "priority":  5,
+        "video_type":  "longform",
+        "risk_level":  "safe",
+        "source_notes":  [
+                             "Original celestial horror premise",
+                             "Avoid named official planes/deities"
+                         ],
+        "created_at":  "2026-04-26T00:00:00Z"
+    },
+    {
+        "id":  "village-that-wakes-up-different-every-morning",
+        "title":  "The Village That Wakes Up Different Every Morning",
+        "status":  "queued",
+        "priority":  6,
+        "video_type":  "longform",
+        "risk_level":  "safe",
+        "source_notes":  [
+                             "Original mystery loop premise",
+                             "Strong hook for fantasy lore video"
+                         ],
+        "created_at":  "2026-04-26T00:00:00Z"
+    },
+    {
+        "id":  "library-where-books-remember-your-sins",
+        "title":  "The Library Where Books Remember Your Sins",
+        "status":  "queued",
+        "priority":  7,
+        "video_type":  "longform",
+        "risk_level":  "safe",
+        "source_notes":  [
+                             "Original cursed library premise",
+                             "Useful for lore, adventure hooks, and Shorts"
+                         ],
+        "created_at":  "2026-04-26T00:00:00Z"
+    },
+    {
+        "id":  "war-that-ended-before-it-began",
+        "title":  "The War That Ended Before It Began",
+        "status":  "queued",
+        "priority":  8,
+        "video_type":  "longform",
+        "risk_level":  "safe",
+        "source_notes":  [
+                             "Original ancient war mystery",
+                             "No official D\u0026D campaign setting references"
+                         ],
+        "created_at":  "2026-04-26T00:00:00Z"
+    },
+    {
+        "id":  "tower-that-only-appears-to-the-guilty",
+        "title":  "The Tower That Only Appears to the Guilty",
+        "status":  "queued",
+        "priority":  9,
+        "video_type":  "longform",
+        "risk_level":  "safe",
+        "source_notes":  [
+                             "Original cursed landmark premise",
+                             "Good thumbnail potential"
+                         ],
+        "created_at":  "2026-04-26T00:00:00Z"
+    },
+    {
+        "id":  "dragon-that-collects-last-words",
+        "title":  "The Dragon That Collects Last Words",
+        "status":  "queued",
+        "priority":  10,
+        "video_type":  "longform",
+        "risk_level":  "safe",
+        "source_notes":  [
+                             "Original dragon-lore premise",
+                             "Generic fantasy dragon, not official named IP"
+                         ],
+        "created_at":  "2026-04-26T00:00:00Z"
+    },
+    {
+        "id":  "cult-that-worships-an-empty-throne",
+        "title":  "The Cult That Worships an Empty Throne",
+        "status":  "queued",
+        "priority":  11,
+        "video_type":  "longform",
+        "risk_level":  "safe",
+        "source_notes":  [
+                             "Original cult mystery premise",
+                             "Avoid real-world religion targeting"
+                         ],
+        "created_at":  "2026-04-26T00:00:00Z"
+    },
+    {
+        "id":  "moon-that-answers-prayers-wrong",
+        "title":  "The Moon That Answers Prayers Wrong",
+        "status":  "queued",
+        "priority":  12,
+        "video_type":  "longform",
+        "risk_level":  "safe",
+        "source_notes":  [
+                             "Original cosmic fantasy premise",
+                             "Strong dark fantasy channel identity"
+                         ],
+        "created_at":  "2026-04-26T00:00:00Z"
+    }
+]
