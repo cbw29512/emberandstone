@@ -195,3 +195,24 @@ Once complete, the topic must not be selected again.
 Before generating scripts, voice, images, video, metadata, or upload instructions, the AI/pipeline must obey this file.
 
 If a future instruction conflicts with this file, stop and ask for confirmation before changing the project direction.
+
+## Production Quality Gate
+
+Ember & Stone must never publish raw first-pass AI output.
+
+Every video must pass production review before upload.
+
+A video is not publish-ready unless all of these are true:
+
+1. The story has a clear beginning, middle, summary/tie-together, and ending.
+2. The story stays focused on one topic only.
+3. The lore feels complete, not like disconnected atmosphere.
+4. The ending gives a final danger, unresolved mystery, or campaign-ready hook.
+5. The script avoids protected D&D setting lore, named official characters, official art, copied sourcebook text, and non-SRD drift.
+6. The voice narration exists and is not an empty or broken file.
+7. The final production manifest marks publish_ready as true.
+8. Human review is still required before actual upload until this pipeline has proven consistent quality.
+
+If any story audit fails, the pipeline must revise the script, regenerate tightened narration, and remake voice audio before moving to video rendering.
+
+Cost is allowed when needed for quality. Do not choose cheap output over production-grade output.
