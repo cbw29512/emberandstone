@@ -1,4 +1,4 @@
-﻿// scripts/generate-leonardo-final-images.mjs
+// scripts/generate-leonardo-final-images.mjs
 // Purpose: Generate the final image set for the selected launch videos.
 // Why: Reuse approved sample images first, then generate only the remaining missing images.
 
@@ -11,6 +11,7 @@ import {
   downloadFile
 } from "./lib/leonardo-client.mjs";
 import { readJson, writeJson, logInfo, logError } from "./lib/json-utils.mjs";
+import { compileBeatLockedPrompt } from "./lib/image-prompt-compiler.mjs";
 
 const ROOT_DIR = process.cwd();
 const SELECTED_TOPICS_PATH = path.join(ROOT_DIR, "output", "state", "selected-topics.json");
@@ -33,10 +34,16 @@ const APPROVED_SAMPLE_PATHS = {
   }
 };
 
-function buildPrompt(basePrompt) {
+function buildPrompt(target) {
+  const extraStyle = "dark fantasy illustration, cinematic composition, strong focal point, moody fog, atmospheric depth, high detail, dramatic light, no readable text, no letters, no logos";
+
+  if (target.beat_lock) {
+    return compileBeatLockedPrompt(target.beat_lock, extraStyle);
+  }
+
   return [
-    basePrompt,
-    "dark fantasy illustration, cinematic composition, strong focal point, moody fog, atmospheric depth, high detail, dramatic light, no readable text, no letters, no logos"
+    target.prompt,
+    extraStyle
   ].join("\n");
 }
 
@@ -55,7 +62,8 @@ function buildTargets(promptPackage) {
 
   targets.push({
     kind: "thumbnail",
-    prompt: promptPackage.thumbnail_prompt
+    prompt: promptPackage.thumbnail_prompt,
+    beat_lock: promptPackage.thumbnail_beat_lock
   });
 
   for (const scene of promptPackage.scenes || []) {
@@ -63,7 +71,8 @@ function buildTargets(promptPackage) {
       kind: "scene",
       scene_number: Number(scene.scene_number),
       scene_title: scene.scene_title,
-      prompt: scene.image_prompt
+      prompt: scene.image_prompt,
+      beat_lock: scene.beat_lock
     });
   }
 
@@ -130,7 +139,7 @@ async function generateTarget(apiKey, topicId, target) {
 
   const payload = {
     modelId: MODEL_ID,
-    prompt: buildPrompt(target.prompt),
+    prompt: buildPrompt(target),
     negative_prompt: "text, letters, logos, watermark, modern objects, copyrighted characters",
     num_images: 1,
     width: WIDTH,

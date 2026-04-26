@@ -432,3 +432,32 @@ Some generated images looked good stylistically but failed the script beat. The 
 Rule:
 
 Use sample image review first. Then after final batch generation, perform human visual beat-match review. Regenerate only failed images until every final image is approved.
+
+## New Verified Rule: Beat-Locked Prompt Fields Are Required
+
+Loose visual prompts can create beautiful images that miss the exact script beat.
+
+Rule:
+
+Every scene and thumbnail must include beat_lock fields before image generation:
+
+- primary_subject
+- primary_action
+- required_elements
+- forbidden_drift
+- environment
+- background_element
+- framing
+- mood
+
+The final image generator should compile from beat_lock when present.
+
+## New Verified Rule: Quality Gates Beat File-Length Warnings
+
+File length warnings should not block production work when the code is safe, tested, and the issue is mostly static configuration data.
+
+Rule:
+
+- Hard blockers: failing syntax checks, failing unit tests, failed audits, broken state, bad images, script drift, IP risk, missing assets.
+- Soft warnings: a config-heavy script being longer than preferred.
+- Split long files later when maintainability is the actual problem, not while trying to preserve creative momentum.
