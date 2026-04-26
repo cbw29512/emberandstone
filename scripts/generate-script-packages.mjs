@@ -7,7 +7,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 const ROOT_DIR = process.cwd();
-const SELECTED_TOPICS_PATH = path.join(ROOT_DIR, "content", "selected-topics.json");
+const SELECTED_TOPICS_PATH = path.join(ROOT_DIR, "output", "state", "selected-topics.json");
 const CHANNEL_CONFIG_PATH = path.join(ROOT_DIR, "content", "channel-config.json");
 const OUTPUT_ROOT = path.join(ROOT_DIR, "output", "scripts");
 
@@ -145,3 +145,4 @@ async function main() {
 }
 
 await main();
+

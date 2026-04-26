@@ -2,6 +2,7 @@
 // Purpose: Select the next topic or topics to prepare for video generation.
 // Why: The pipeline needs deterministic launch logic: 2 videos at launch,
 // then 1 video per day after that.
+// Generated selection state is written to output/state so Git stays clean.
 
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -11,7 +12,7 @@ const ROOT_DIR = process.cwd();
 const TOPIC_QUEUE_PATH = path.join(ROOT_DIR, "content", "topic-queue.json");
 const PUBLISHED_PATH = path.join(ROOT_DIR, "content", "published.json");
 const CHANNEL_CONFIG_PATH = path.join(ROOT_DIR, "content", "channel-config.json");
-const SELECTED_TOPICS_PATH = path.join(ROOT_DIR, "content", "selected-topics.json");
+const SELECTED_TOPICS_PATH = path.join(ROOT_DIR, "output", "state", "selected-topics.json");
 
 function logInfo(message) {
   console.log("[INFO] " + message);
@@ -38,6 +39,10 @@ async function readJson(filePath, label) {
 async function writeJson(filePath, data) {
   try {
     const prettyJson = JSON.stringify(data, null, 2) + "\n";
+
+    // Ensure output/state exists before writing selected-topics.json.
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+
     await fs.writeFile(filePath, prettyJson, "utf8");
   } catch (error) {
     throw new Error("Failed to write selected topics: " + error.message);
