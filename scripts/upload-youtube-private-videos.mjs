@@ -1,6 +1,5 @@
 // scripts/upload-youtube-private-videos.mjs
-// Purpose: Upload rendered videos to YouTube as PRIVATE review drafts.
-// Why: Automation can upload drafts, but public release remains manual.
+// Uploads rendered videos to YouTube as PRIVATE review drafts.
 
 import path from "node:path";
 import { fail, logInfo, logWarn, pathExists, readJson, writeJson } from "./lib/youtube/common.mjs";

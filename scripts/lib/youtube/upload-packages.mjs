@@ -1,5 +1,5 @@
 // scripts/lib/youtube/upload-packages.mjs
-// Purpose: Load and validate private YouTube upload packages.
+// Loads and validates private YouTube upload packages.
 
 import fs from "node:fs/promises";
 import path from "node:path";

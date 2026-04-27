@@ -1,5 +1,5 @@
 // scripts/lib/youtube/common.mjs
-// Purpose: Shared safe helpers for YouTube upload scripts.
+// Shared helpers for YouTube upload scripts.
 
 import fs from "node:fs/promises";
 import path from "node:path";

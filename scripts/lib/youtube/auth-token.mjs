@@ -1,5 +1,5 @@
 // scripts/lib/youtube/auth-token.mjs
-// Purpose: Load and refresh YouTube OAuth tokens without printing secrets.
+// Loads and refreshes YouTube OAuth tokens without printing secrets.
 
 import { fail, logInfo, readJson, writeJson } from "./common.mjs";
 

@@ -1,5 +1,5 @@
 // scripts/lib/youtube/upload-client.mjs
-// Purpose: Send one private video upload to YouTube.
+// Sends one private video upload to YouTube.
 
 import fs from "node:fs/promises";
 import { fail } from "./common.mjs";
