@@ -48,6 +48,7 @@
                     "review:missing-unique":  "node scripts/build-missing-unique-review.mjs",
                     "merge:approved-missing-visuals":  "node scripts/merge-approved-missing-visuals.mjs",
                     "build:youtube-private-upload-package":  "node scripts/build-youtube-private-upload-package.mjs",
-                    "auth:youtube":  "node scripts/youtube-oauth-login.mjs"
+                    "auth:youtube":  "node scripts/youtube-oauth-login.mjs",
+                    "upload:youtube-private":  "node scripts/upload-youtube-private-videos.mjs"
                 }
 }
