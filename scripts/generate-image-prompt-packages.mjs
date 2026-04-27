@@ -1,10 +1,11 @@
-﻿// scripts/generate-image-prompt-packages.mjs
+// scripts/generate-image-prompt-packages.mjs
 // Purpose: Generate image prompt packages for selected topics.
 // Why: Visual prompts are local prep; no paid image API is called here.
 
 import path from "node:path";
 import { readJson, writeJson, logInfo, logError } from "./lib/json-utils.mjs";
 import { buildImagePromptPackage } from "./lib/image-prompt-builder.mjs";
+import { normalizeStrictImagePromptPackage } from "./lib/visual-prompt-normalizer.mjs";
 
 const ROOT_DIR = process.cwd();
 const SELECTED_TOPICS_PATH = path.join(ROOT_DIR, "output", "state", "selected-topics.json");
@@ -32,7 +33,8 @@ async function main() {
       }
 
       const outputPath = path.join(VISUAL_ROOT, topic.id, "image-prompt-package.json");
-      await writeJson(outputPath, result.promptPackage);
+            const promptPackage = normalizeStrictImagePromptPackage(result.promptPackage);
+      await writeJson(outputPath, promptPackage);
       created.push(topic.id);
       logInfo("Image prompt package created for: " + topic.title);
     }
