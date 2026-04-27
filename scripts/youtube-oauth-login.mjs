@@ -1,6 +1,6 @@
 ﻿// scripts/youtube-oauth-login.mjs
 // Purpose: Create a local YouTube OAuth token for private review uploads.
-// Why: YouTube uploads require user authorization; an API key is not enough.
+// Why: YouTube uploads require OAuth user authorization; API keys cannot upload videos.
 
 import fs from "node:fs/promises";
 import http from "node:http";
@@ -11,6 +11,8 @@ import { spawn } from "node:child_process";
 const ROOT_DIR = process.cwd();
 const SECRET_PATH = path.join(ROOT_DIR, "secrets", "youtube", "client_secret.json");
 const TOKEN_PATH = path.join(ROOT_DIR, "secrets", "youtube", "token.json");
+const AUTH_URL_PATH = path.join(ROOT_DIR, "secrets", "youtube", "auth-url.txt");
+
 const SCOPE = "https://www.googleapis.com/auth/youtube.upload";
 const HOST = "127.0.0.1";
 const PORT = 53682;
@@ -34,49 +36,16 @@ async function readJson(filePath) {
   return JSON.parse(stripBom(raw));
 }
 
-function getInstalledClient(credentials) {
+function getOAuthClient(credentials) {
   const client = credentials.installed || credentials.web;
 
-  if (!client) {
-    fail("OAuth JSON does not contain installed or web client data.");
-  }
-
-  if (!client.client_id) {
-    fail("OAuth JSON is missing client_id.");
-  }
-
-  if (!client.client_secret) {
-    fail("OAuth JSON is missing client_secret.");
-  }
-
-  if (!client.auth_uri) {
-    fail("OAuth JSON is missing auth_uri.");
-  }
-
-  if (!client.token_uri) {
-    fail("OAuth JSON is missing token_uri.");
-  }
+  if (!client) fail("OAuth JSON does not contain installed or web client data.");
+  if (!client.client_id) fail("OAuth JSON is missing client_id.");
+  if (!client.client_secret) fail("OAuth JSON is missing client_secret.");
+  if (!client.auth_uri) fail("OAuth JSON is missing auth_uri.");
+  if (!client.token_uri) fail("OAuth JSON is missing token_uri.");
 
   return client;
-}
-
-function openBrowser(url) {
-  const command = process.platform === "win32"
-    ? "cmd"
-    : process.platform === "darwin"
-      ? "open"
-      : "xdg-open";
-
-  const args = process.platform === "win32"
-    ? ["/c", "start", "", url]
-    : [url];
-
-  const child = spawn(command, args, {
-    detached: true,
-    stdio: "ignore"
-  });
-
-  child.unref();
 }
 
 function buildAuthUrl(client, state) {
@@ -93,6 +62,15 @@ function buildAuthUrl(client, state) {
   return url.toString();
 }
 
+function openTextFile(filePath) {
+  const child = spawn("notepad.exe", [filePath], {
+    detached: true,
+    stdio: "ignore"
+  });
+
+  child.unref();
+}
+
 function waitForOAuthCallback(expectedState) {
   return new Promise((resolve, reject) => {
     const server = http.createServer((request, response) => {
@@ -100,18 +78,17 @@ function waitForOAuthCallback(expectedState) {
         const requestUrl = new URL(request.url, REDIRECT_URI);
 
         if (requestUrl.pathname !== CALLBACK_PATH) {
-          response.writeHead(404);
+          response.writeHead(404, { "content-type": "text/plain" });
           response.end("Not found.");
           return;
         }
 
         const error = requestUrl.searchParams.get("error");
-
         if (error) {
           response.writeHead(400, { "content-type": "text/plain" });
           response.end("OAuth failed. You may close this tab.");
-          reject(new Error("Google returned OAuth error: " + error));
           server.close();
+          reject(new Error("Google returned OAuth error: " + error));
           return;
         }
 
@@ -121,16 +98,16 @@ function waitForOAuthCallback(expectedState) {
         if (state !== expectedState) {
           response.writeHead(400, { "content-type": "text/plain" });
           response.end("OAuth state mismatch. You may close this tab.");
-          reject(new Error("OAuth state mismatch."));
           server.close();
+          reject(new Error("OAuth state mismatch."));
           return;
         }
 
         if (!code) {
           response.writeHead(400, { "content-type": "text/plain" });
           response.end("Missing OAuth code. You may close this tab.");
-          reject(new Error("OAuth callback missing code."));
           server.close();
+          reject(new Error("OAuth callback missing code."));
           return;
         }
 
@@ -139,14 +116,12 @@ function waitForOAuthCallback(expectedState) {
 
         server.close(() => resolve(code));
       } catch (error) {
-        reject(error);
         server.close();
+        reject(error);
       }
     });
 
-    server.once("error", (error) => {
-      reject(error);
-    });
+    server.once("error", (error) => reject(error));
 
     server.listen(PORT, HOST, () => {
       logInfo("OAuth callback server listening on " + REDIRECT_URI);
@@ -194,7 +169,7 @@ async function exchangeCodeForToken(client, code) {
 async function saveToken(tokenData) {
   await fs.mkdir(path.dirname(TOKEN_PATH), { recursive: true });
 
-  const safeTokenRecord = {
+  const tokenRecord = {
     created_at: new Date().toISOString(),
     scope: tokenData.scope || SCOPE,
     token_type: tokenData.token_type || "",
@@ -205,42 +180,44 @@ async function saveToken(tokenData) {
     refresh_token: tokenData.refresh_token || ""
   };
 
-  await fs.writeFile(TOKEN_PATH, JSON.stringify(safeTokenRecord, null, 2));
+  await fs.writeFile(TOKEN_PATH, JSON.stringify(tokenRecord, null, 2));
 }
 
 async function main() {
   try {
-    logInfo("Starting YouTube OAuth login.");
-    logInfo("Secrets will not be printed.");
+    logInfo("Starting safe manual YouTube OAuth login.");
+    logInfo("No secrets will be printed.");
 
     const credentials = await readJson(SECRET_PATH);
-    const client = getInstalledClient(credentials);
+    const client = getOAuthClient(credentials);
     const state = crypto.randomBytes(24).toString("hex");
     const authUrl = buildAuthUrl(client, state);
-    const codePromise = waitForOAuthCallback(state);
 
-    logInfo("Opening browser for Google authorization...");
-    openBrowser(authUrl);
+    await fs.mkdir(path.dirname(AUTH_URL_PATH), { recursive: true });
+    await fs.writeFile(AUTH_URL_PATH, authUrl + "\n");
 
-    console.log("");
-    console.log("If the browser does not open, copy this URL manually:");
-    console.log(authUrl);
-    console.log("");
+    const callbackPromise = waitForOAuthCallback(state);
 
-    const code = await codePromise;
+    logInfo("Auth URL saved to: " + AUTH_URL_PATH);
+    logInfo("Opening auth-url.txt in Notepad.");
+    logInfo("Copy the full URL from Notepad and paste it into your browser.");
+    logInfo("After approving Google access, return to PowerShell.");
 
-    logInfo("Authorization code received. Exchanging for local token...");
+    openTextFile(AUTH_URL_PATH);
+
+    const code = await callbackPromise;
+
+    logInfo("Authorization code received. Exchanging for token...");
     const tokenData = await exchangeCodeForToken(client, code);
 
     await saveToken(tokenData);
 
-    logInfo("Token saved locally. Token value was not printed.");
-    logInfo("Saved token path: " + TOKEN_PATH);
-
     if (!tokenData.refresh_token) {
-      console.warn("[WARN] No refresh_token returned. If uploads fail later, revoke app access and rerun OAuth login.");
+      console.warn("[WARN] No refresh_token returned. If uploads fail later, rerun auth after revoking app access.");
     }
 
+    logInfo("Token saved locally. Token value was not printed.");
+    logInfo("Saved token path: " + TOKEN_PATH);
     logInfo("YouTube OAuth login complete.");
   } catch (error) {
     console.error("[ERROR] YouTube OAuth login failed: " + error.message);
