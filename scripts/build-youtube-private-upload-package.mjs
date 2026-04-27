@@ -1,6 +1,6 @@
 ﻿// scripts/build-youtube-private-upload-package.mjs
-// Purpose: Build private-review YouTube upload manifests from rendered MP4s.
-// Why: Upload automation must default to private so the user can review before publishing.
+// Purpose: Build polished private-review YouTube upload manifests.
+// Why: Channel branding is now Ember & Stone, so upload metadata must match it.
 
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -36,7 +36,7 @@ async function pathExists(filePath) {
   }
 }
 
-function titleFromTopic(topicId) {
+function humanTitleFromTopic(topicId) {
   return topicId
     .split("-")
     .filter(Boolean)
@@ -44,18 +44,42 @@ function titleFromTopic(topicId) {
     .join(" ");
 }
 
-function buildDescription(title) {
+function getTopicMetadata(policy, topicId) {
+  const metadata = policy.topic_metadata?.[topicId];
+
+  if (metadata?.title && metadata?.hook) {
+    return metadata;
+  }
+
+  return {
+    title: humanTitleFromTopic(topicId) + " — Dark Fantasy Lore | Ember & Stone",
+    hook: "A dark fantasy lore story from Ember & Stone.",
+    keywords: []
+  };
+}
+
+function buildDescription(policy, topicId, topicMetadata) {
   return [
-    title,
+    topicMetadata.hook,
     "",
-    "A dark fantasy lore tale from Ember & Stone.",
+    "This dark fantasy lore story from Ember & Stone explores cursed places, forgotten gods, haunted kingdoms, ancient warnings, and strange myths that feel like they were pulled from a forbidden campaign journal.",
+    "",
+    "For dungeon masters, writers, fantasy fans, and TTRPG worldbuilders, this tale can be used as inspiration for eerie locations, lost civilizations, forbidden ruins, ominous legends, and campaign story hooks.",
+    "",
+    "Subscribe for narrated dark fantasy lore, forgotten ruins, ancient gods, cursed cities, haunted kingdoms, and mythic stories for the table, the page, and the imagination.",
     "",
     "Uploaded as a private review draft first. Public release requires manual approval.",
     "",
-    "For dungeon masters, storytellers, dark fantasy fans, and TTRPG worldbuilders looking for eerie mythic inspiration.",
-    "",
     "#darkfantasy #fantasylore #ttrpg"
   ].join("\n");
+}
+
+function buildTags(policy, topicMetadata) {
+  const baseTags = Array.isArray(policy.default_tags) ? policy.default_tags : [];
+  const topicTags = Array.isArray(topicMetadata.keywords) ? topicMetadata.keywords : [];
+  const uniqueTags = [...new Set([...topicTags, ...baseTags])];
+
+  return uniqueTags.slice(0, 25);
 }
 
 async function collectRenderedVideos() {
@@ -104,6 +128,42 @@ function validatePolicy(policy) {
   if (!Array.isArray(policy.default_tags) || policy.default_tags.length === 0) {
     fail("YouTube policy must include default tags.");
   }
+
+  if (policy.made_for_kids !== false) {
+    fail("YouTube policy should be made_for_kids=false for this channel.");
+  }
+}
+
+function buildUploadPackage(policy, video) {
+  const topicMetadata = getTopicMetadata(policy, video.topic_id);
+
+  return {
+    topic_id: video.topic_id,
+    status: "ready_for_private_review_upload",
+    video_file: video.video_file,
+    video_size_bytes: video.size_bytes,
+    privacy_status: "private",
+    public_publish_requires_manual_approval: true,
+    channel_name: policy.channel_name,
+    channel_handle: policy.channel_handle,
+    snippet: {
+      title: topicMetadata.title,
+      description: buildDescription(policy, video.topic_id, topicMetadata),
+      tags: buildTags(policy, topicMetadata),
+      categoryId: policy.category_id
+    },
+    status_payload: {
+      privacyStatus: "private",
+      selfDeclaredMadeForKids: false
+    },
+    review_notes: [
+      "Upload as private only.",
+      "User watches YouTube private draft.",
+      "If good, user manually publishes or schedules.",
+      "If bad, revise locally and upload a new private review version."
+    ],
+    created_at: new Date().toISOString()
+  };
 }
 
 async function main() {
@@ -117,47 +177,25 @@ async function main() {
     const packages = [];
 
     for (const video of videos) {
-      const title = titleFromTopic(video.topic_id) + " | Dark Fantasy Lore | Ember & Stone";
-      const uploadPackage = {
-        topic_id: video.topic_id,
-        status: "ready_for_private_review_upload",
-        video_file: video.video_file,
-        video_size_bytes: video.size_bytes,
-        privacy_status: "private",
-        public_publish_requires_manual_approval: true,
-        snippet: {
-          title,
-          description: buildDescription(title),
-          tags: policy.default_tags,
-          categoryId: policy.category_id
-        },
-        status_payload: {
-          privacyStatus: "private",
-          selfDeclaredMadeForKids: policy.made_for_kids
-        },
-        review_notes: [
-          "Upload as private only.",
-          "User watches YouTube private draft.",
-          "If good, user manually publishes or schedules.",
-          "If bad, revise locally and upload a new private review version."
-        ],
-        created_at: new Date().toISOString()
-      };
-
+      const uploadPackage = buildUploadPackage(policy, video);
       const packagePath = path.join(OUTPUT_ROOT, video.topic_id + ".youtube-upload.json");
+
       await fs.writeFile(packagePath, JSON.stringify(uploadPackage, null, 2));
 
       packages.push({
         topic_id: video.topic_id,
         package_file: packagePath,
         video_file: video.video_file,
+        title: uploadPackage.snippet.title,
         privacy_status: "private"
       });
 
       logInfo("Built private upload package: " + packagePath);
+      logInfo("Title: " + uploadPackage.snippet.title);
     }
 
     const indexPath = path.join(OUTPUT_ROOT, "youtube-private-upload-index.json");
+
     await fs.writeFile(indexPath, JSON.stringify({
       status: "ready_for_private_review_upload",
       package_count: packages.length,
