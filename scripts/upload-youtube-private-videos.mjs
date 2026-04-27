@@ -16,6 +16,7 @@ const PATHS = {
 };
 
 const LEDGER_PATH = path.join(PATHS.resultRoot, "private-upload-ledger.json");
+const POLICY_PATH = path.join(ROOT_DIR, "content", "youtube-upload-policy.json");
 
 async function loadLedger() {
   if (!(await pathExists(LEDGER_PATH))) {
@@ -25,9 +26,35 @@ async function loadLedger() {
   return readJson(LEDGER_PATH);
 }
 
-function ledgerHasSuccess(ledger, topicId) {
-  return Array.isArray(ledger.uploads)
-    && ledger.uploads.some((item) => item.topic_id === topicId && item.status === "uploaded_private");
+async function loadUploadPolicy() {
+  const policy = await readJson(POLICY_PATH);
+
+  if (!policy.expected_channel_id) {
+    throw new Error("youtube-upload-policy.json missing expected_channel_id.");
+  }
+
+  return policy;
+}
+
+function getUploadRecordChannelId(record) {
+  return record?.youtube_channel_id
+    || record?.channel_id
+    || record?.raw_response?.snippet?.channelId
+    || null;
+}
+
+function ledgerHasSuccess(ledger, topicId, expectedChannelId) {
+  if (!Array.isArray(ledger.uploads)) {
+    return false;
+  }
+
+  return ledger.uploads.some((item) => {
+    const channelId = getUploadRecordChannelId(item);
+
+    return item.topic_id === topicId
+      && item.status === "uploaded_private"
+      && channelId === expectedChannelId;
+  });
 }
 
 async function saveLedger(ledger) {
@@ -35,12 +62,12 @@ async function saveLedger(ledger) {
   await writeJson(LEDGER_PATH, ledger);
 }
 
-async function uploadOne(accessToken, uploadPackage, ledger) {
+async function uploadOne(accessToken, uploadPackage, ledger, policy) {
   if (!(await pathExists(uploadPackage.video_file))) {
     fail("Video file missing: " + uploadPackage.video_file);
   }
 
-  if (ledgerHasSuccess(ledger, uploadPackage.topic_id) && process.env.FORCE_YOUTUBE_UPLOAD !== "1") {
+  if (ledgerHasSuccess(ledger, uploadPackage.topic_id, policy.expected_channel_id) && process.env.FORCE_YOUTUBE_UPLOAD !== "1") {
     logWarn("Skipping already uploaded topic: " + uploadPackage.topic_id);
     return null;
   }
@@ -49,6 +76,20 @@ async function uploadOne(accessToken, uploadPackage, ledger) {
 
   const result = await uploadVideoMultipart(accessToken, uploadPackage);
   const record = buildUploadRecord(uploadPackage, result);
+
+  const uploadedChannelId = getUploadRecordChannelId(record);
+
+  record.youtube_channel_id = uploadedChannelId;
+  record.expected_channel_id = policy.expected_channel_id;
+
+  if (uploadedChannelId !== policy.expected_channel_id) {
+    throw new Error(
+      "Upload landed on wrong channel. Expected "
+        + policy.expected_channel_id
+        + " but got "
+        + uploadedChannelId
+    );
+  }
 
   ledger.uploads = Array.isArray(ledger.uploads) ? ledger.uploads : [];
   ledger.uploads.push(record);
@@ -84,11 +125,12 @@ async function main() {
 
     const token = await loadFreshToken(PATHS);
     const packages = await loadUploadPackages(PATHS.packageRoot);
+    const policy = await loadUploadPolicy();
     const ledger = await loadLedger();
     const uploaded = [];
 
     for (const uploadPackage of packages) {
-      const record = await uploadOne(token.access_token, uploadPackage, ledger);
+      const record = await uploadOne(token.access_token, uploadPackage, ledger, policy);
       if (record) uploaded.push(record);
     }
 

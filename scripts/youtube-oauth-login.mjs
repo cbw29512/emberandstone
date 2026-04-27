@@ -1,4 +1,4 @@
-// scripts/youtube-oauth-login.mjs
+﻿// scripts/youtube-oauth-login.mjs
 // Purpose: Create a local YouTube OAuth token for private review uploads.
 // Why: YouTube uploads require OAuth user authorization; API keys cannot upload videos.
 
@@ -13,7 +13,7 @@ const SECRET_PATH = path.join(ROOT_DIR, "secrets", "youtube", "client_secret.jso
 const TOKEN_PATH = path.join(ROOT_DIR, "secrets", "youtube", "token.json");
 const AUTH_URL_PATH = path.join(ROOT_DIR, "secrets", "youtube", "auth-url.txt");
 
-const SCOPE = "https://www.googleapis.com/auth/youtube.upload";
+const SCOPE = "https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.readonly";
 const HOST = "127.0.0.1";
 const PORT = 53682;
 const CALLBACK_PATH = "/oauth2callback";
@@ -226,3 +226,4 @@ async function main() {
 }
 
 await main();
+
