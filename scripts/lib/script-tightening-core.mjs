@@ -109,9 +109,20 @@ export async function tightenOneScript(topic, options) {
       throw new Error("Tightened narration outside safe range: " + bestWords + " words.");
     }
 
+    const qualityFirstLengthPolicy = {
+      policy_name: "quality_first_flexible_length",
+      policy_note: "Quality comes before exact duration. Tightening should improve clarity, pacing, retention, and narration flow without forcing every story into a rigid word count. A story may be shorter or longer when the hook, structure, TTRPG usefulness, and dark fantasy atmosphere remain strong.",
+      minimum_safe_words: 600,
+      target_words: TARGET_WORDS,
+      preferred_max_words: PREFERRED_MAX_WORDS,
+      acceptable_max_words: ACCEPTABLE_MAX_WORDS,
+      enforcement: "Fail closed only when narration is too short to feel complete or too long for the review-video production target."
+    };
+
     await writeJson(tightenedPath, {
       ...draft,
       narration_script: bestNarration,
+      quality_first_length_policy: qualityFirstLengthPolicy,
       tightening: {
         method,
         source: "script-draft.json",
@@ -120,6 +131,9 @@ export async function tightenOneScript(topic, options) {
         target_words: TARGET_WORDS,
         preferred_max_words: PREFERRED_MAX_WORDS,
         acceptable_max_words: ACCEPTABLE_MAX_WORDS,
+        quality_first_length_policy: true,
+        quality_first_length_policy_details: qualityFirstLengthPolicy,
+        policy_note: qualityFirstLengthPolicy.policy_note,
         created_at: new Date().toISOString()
       }
     });
