@@ -1,1 +1,22 @@
-[]
+[
+    {
+        "id":  "city-that-erased-its-own-name",
+        "topic_id":  "city-that-erased-its-own-name",
+        "title":  "The City That Erased Its Own Name",
+        "status":  "uploaded",
+        "source":  "manual_upload",
+        "completed_at":  "2026-04-27T04:18:11.764Z",
+        "notes":  "Manually uploaded first during Ember and Stone launch."
+    },
+    {
+        "id":  "forgotten-god-under-mountain",
+        "topic_id":  "forgotten-god-under-mountain",
+        "title":  "The Forgotten God Beneath the Mountain",
+        "status":  "uploaded",
+        "source":  "pipeline_private_upload",
+        "youtube_video_id":  "Lfk3UI66GpY",
+        "youtube_channel_id":  "UCAu5ULlKQ5RdSovoTQ5_MnA",
+        "completed_at":  "2026-04-27T04:18:11.764Z",
+        "notes":  "Uploaded privately through fixed YouTube pipeline."
+    }
+]

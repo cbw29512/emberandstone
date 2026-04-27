@@ -1,4 +1,4 @@
-﻿// scripts/select-topics.mjs
+// scripts/select-topics.mjs
 // Purpose: Select the next topic or topics to prepare for video generation.
 // Why: The pipeline needs deterministic launch logic: 2 videos at launch,
 // then 1 video per day after that.
@@ -63,6 +63,30 @@ function getPublishedCount(publishedItems) {
   }
 }
 
+function getCompletedTopicIds(publishedItems) {
+  const completedStatuses = new Set(["uploaded", "published"]);
+
+  if (!Array.isArray(publishedItems)) {
+    return new Set();
+  }
+
+  return new Set(
+    publishedItems
+      .filter((item) => item && completedStatuses.has(item.status))
+      .map((item) => item.id || item.topic_id)
+      .filter(Boolean)
+  );
+}
+
+function filterCompletedTopics(topics, completedIds) {
+  if (!Array.isArray(topics)) {
+    return [];
+  }
+
+  return topics.filter((topic) => {
+    return topic && topic.id && !completedIds.has(topic.id);
+  });
+}
 function getRequestedCount(channelConfig, publishedCount) {
   try {
     const publishing = channelConfig.publishing || {};
@@ -120,7 +144,9 @@ async function main() {
 
     const publishedCount = getPublishedCount(published);
     const request = getRequestedCount(channelConfig, publishedCount);
-    const selectedTopics = selectQueuedTopics(topics, request.count);
+        const completedIds = getCompletedTopicIds(published);
+    const availableTopics = filterCompletedTopics(topics, completedIds);
+    const selectedTopics = selectQueuedTopics(availableTopics, request.count);
 
     const selectedState = {
       selected_at: new Date().toISOString(),
