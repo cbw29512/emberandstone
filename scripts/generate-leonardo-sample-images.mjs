@@ -1,4 +1,4 @@
-﻿// scripts/generate-leonardo-sample-images.mjs
+// scripts/generate-leonardo-sample-images.mjs
 // Purpose: Generate a tiny visual sample set from real prompt packages.
 // Why: We judge style before spending money on the full scene batch.
 
@@ -14,17 +14,30 @@ import { readJson, writeJson, logInfo, logError } from "./lib/json-utils.mjs";
 const ROOT_DIR = process.cwd();
 const VISUAL_ROOT = path.join(ROOT_DIR, "output", "visuals");
 const SAMPLE_ROOT = path.join(ROOT_DIR, "output", "images", "samples");
+const SELECTED_TOPICS_PATH = path.join(ROOT_DIR, "output", "state", "selected-topics.json");
 
 const MODEL_ID = "16e7060a-803e-4df3-97ee-edcfa5dc9cc8";
 const WIDTH = 1024;
 const HEIGHT = 1024;
 
-const SAMPLES = [
-  { topicId: "city-that-erased-its-own-name", kind: "thumbnail" },
-  { topicId: "city-that-erased-its-own-name", kind: "scene", sceneNumber: 5 },
-  { topicId: "forgotten-god-under-mountain", kind: "thumbnail" },
-  { topicId: "forgotten-god-under-mountain", kind: "scene", sceneNumber: 5 }
-];
+function buildSamplesFromSelectedTopics(selectedState) {
+  const selectedTopics = Array.isArray(selectedState.topics) ? selectedState.topics : [];
+
+  if (selectedTopics.length === 0) {
+    throw new Error("No selected topics found for Leonardo sample generation.");
+  }
+
+  return selectedTopics.flatMap((topic) => {
+    if (!topic || !topic.id) {
+      throw new Error("Selected topic is missing id.");
+    }
+
+    return [
+      { topicId: topic.id, kind: "thumbnail" },
+      { topicId: topic.id, kind: "scene", sceneNumber: 5 }
+    ];
+  });
+}
 
 function buildPrompt(basePrompt) {
   return [
@@ -106,8 +119,10 @@ async function main() {
     logInfo("Generating Leonardo sample images...");
 
     const apiKey = await loadLeonardoKey(ROOT_DIR);
+    const selectedState = await readJson(SELECTED_TOPICS_PATH, "selected-topics.json");
+    const samples = buildSamplesFromSelectedTopics(selectedState);
 
-    for (const sample of SAMPLES) {
+    for (const sample of samples) {
       await generateSample(apiKey, sample);
     }
 
