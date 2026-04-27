@@ -49,6 +49,7 @@
                     "merge:approved-missing-visuals":  "node scripts/merge-approved-missing-visuals.mjs",
                     "build:youtube-private-upload-package":  "node scripts/build-youtube-private-upload-package.mjs",
                     "auth:youtube":  "node scripts/youtube-oauth-login.mjs",
-                    "upload:youtube-private":  "node scripts/upload-youtube-private-videos.mjs"
+                    "upload:youtube-private":  "node scripts/upload-youtube-private-videos.mjs",
+                    "verify:youtube-channel":  "node scripts/verify-youtube-channel.mjs"
                 }
 }

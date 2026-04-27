@@ -1,40 +1,58 @@
-﻿{
-  "channel_name": "Ember & Stone",
-  "channel_handle": "@emberstoneaudio",
-  "default_privacy_status": "private",
-  "allowed_privacy_statuses": ["private", "unlisted", "public"],
-  "public_publish_requires_manual_approval": true,
-  "upload_mode": "private_review_first",
-  "category_id": "24",
-  "made_for_kids": false,
-  "default_tags": [
-    "dark fantasy lore",
-    "fantasy lore",
-    "dark fantasy story",
-    "cursed cities",
-    "forgotten gods",
-    "haunted kingdoms",
-    "ancient myths",
-    "ttrpg inspiration",
-    "dnd story ideas",
-    "dungeon master inspiration",
-    "worldbuilding",
-    "creepy fantasy stories",
-    "mythic fantasy",
-    "fantasy storytelling",
-    "dark fantasy narration",
-    "Ember and Stone"
-  ],
-  "topic_metadata": {
-    "city-that-erased-its-own-name": {
-      "title": "The City That Erased Its Own Name — A Dark Fantasy Lore Story | Ember & Stone",
-      "hook": "A cursed city. A forgotten warning. A name no one is allowed to remember.",
-      "keywords": ["cursed city", "lost civilization", "forbidden name", "dark fantasy city", "memory curse"]
-    },
-    "forgotten-god-under-mountain": {
-      "title": "The Forgotten God Under the Mountain — Dark Fantasy Lore | Ember & Stone",
-      "hook": "Something ancient sleeps beneath the mountain, and the old signs were never meant to be found.",
-      "keywords": ["forgotten god", "mountain god", "ancient deity", "dark fantasy myth", "forbidden shrine"]
-    }
-  }
+{
+    "channel_name":  "Ember \u0026 Stone",
+    "channel_handle":  "@emberstoneaudio",
+    "default_privacy_status":  "private",
+    "allowed_privacy_statuses":  [
+                                     "private",
+                                     "unlisted",
+                                     "public"
+                                 ],
+    "public_publish_requires_manual_approval":  true,
+    "upload_mode":  "private_review_first",
+    "category_id":  "24",
+    "made_for_kids":  false,
+    "default_tags":  [
+                         "dark fantasy lore",
+                         "fantasy lore",
+                         "dark fantasy story",
+                         "cursed cities",
+                         "forgotten gods",
+                         "haunted kingdoms",
+                         "ancient myths",
+                         "ttrpg inspiration",
+                         "dnd story ideas",
+                         "dungeon master inspiration",
+                         "worldbuilding",
+                         "creepy fantasy stories",
+                         "mythic fantasy",
+                         "fantasy storytelling",
+                         "dark fantasy narration",
+                         "Ember and Stone"
+                     ],
+    "topic_metadata":  {
+                           "city-that-erased-its-own-name":  {
+                                                                 "title":  "The City That Erased Its Own Name — A Dark Fantasy Lore Story | Ember \u0026 Stone",
+                                                                 "hook":  "A cursed city. A forgotten warning. A name no one is allowed to remember.",
+                                                                 "keywords":  [
+                                                                                  "cursed city",
+                                                                                  "lost civilization",
+                                                                                  "forbidden name",
+                                                                                  "dark fantasy city",
+                                                                                  "memory curse"
+                                                                              ]
+                                                             },
+                           "forgotten-god-under-mountain":  {
+                                                                "title":  "The Forgotten God Under the Mountain — Dark Fantasy Lore | Ember \u0026 Stone",
+                                                                "hook":  "Something ancient sleeps beneath the mountain, and the old signs were never meant to be found.",
+                                                                "keywords":  [
+                                                                                 "forgotten god",
+                                                                                 "mountain god",
+                                                                                 "ancient deity",
+                                                                                 "dark fantasy myth",
+                                                                                 "forbidden shrine"
+                                                                             ]
+                                                            }
+                       },
+    "expected_channel_id":  "UCAu5ULlKQ5RdSovoTQ5_MnA",
+    "expected_channel_name":  "Ember \u0026 Stone"
 }

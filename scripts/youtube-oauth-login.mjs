@@ -1,4 +1,4 @@
-﻿// scripts/youtube-oauth-login.mjs
+// scripts/youtube-oauth-login.mjs
 // Purpose: Create a local YouTube OAuth token for private review uploads.
 // Why: YouTube uploads require OAuth user authorization; API keys cannot upload videos.
 
@@ -56,7 +56,7 @@ function buildAuthUrl(client, state) {
   url.searchParams.set("response_type", "code");
   url.searchParams.set("scope", SCOPE);
   url.searchParams.set("access_type", "offline");
-  url.searchParams.set("prompt", "consent");
+  url.searchParams.set("prompt", "consent select_account");
   url.searchParams.set("state", state);
 
   return url.toString();
